@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+	<!-- debug: modo de depuração Possíveis Valores: 0 = desligado 1 = somente 
+		no log (se estiver habilitado) 2 = somente na tela 3 = no log e na tela -->
+	<debug>1</debug>
+
+	<!-- CaracterSet Utilizado -->
+	<charset>UTF-8</charset>
+
+	<!-- Tratamento de Log em arquivo -->
+	<log>
+
+		<!-- Habilitado: 0 / 1 -->
+		<habilitado>1</habilitado>
+		<!-- Caminho relativo ao DOC_ROOT -->
+		<caminho>log/zws.log</caminho>
+	</log>
+
+	<!-- Tratamento de data -->
+	<data>
+		<timezone>America/Maceio</timezone>
+	</data>
+
+	<!-- Configurações de Banco de dados -->
+	<database>
+		<driver>Mysqli</driver>
+		<usuario>drFritz</usuario>
+		<senha>b38a5a8d7da250c8a87fa197986ef025397a20e4f685e52fe5a358cd3f40f1c7KT+vW/706lGaVRPIKanx7vTxCcDZXXsZ9EjySKFNZUK+1aM0WL0JGkCh2OuJSTQo</senha>
+		<banco>drFritz</banco>
+		<ip></ip>
+		<charset>UTF8</charset>
+		<indSenhaCript>1</indSenhaCript>
+
+	</database>
+
+	<!-- Configurações de E-Mail -->
+	<mail>
+		<!-- Nome do Remetente -->
+		<nomeRemetente>ZWS</nomeRemetente>
+
+		<!-- Email do Remetente -->
+		<remetente>zws@localhost</remetente>
+
+		<!-- Nome do Admin do Sistema -->
+		<nomeAdmin>Daniel Cassela</nomeAdmin>
+
+		<!-- Email do Admin do sistema -->
+		<admin>cassela@localhost</admin>
+	</mail>
+</config>
