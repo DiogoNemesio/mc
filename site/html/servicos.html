@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "[url="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"]http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd[/url]">
+<html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head> 
+%LOAD_HTML%
+</head>
+
+<table class="MCTable">
+	<tr class="MCTitulo">
+		<td align="left">Serviços <br><br></td>
+	<tr>
+	<tr></tr><tr></tr>
+</table>
+<div id="a_tabbar" style="width:700px; height:310px;"/>
+<script>
+
+tabbar = new dhtmlXTabBar("a_tabbar", "top");
+tabbar.setSkin('%SKIN_NAME%');
+tabbar.setImagePath("%HTMLX_IMG_URL%");
+tabbar.addTab("a1", "Serviços", "100px");
+tabbar.addTab("a2", "Financeiro", "100px")
+tabbar.addTab("a3", "Gestão", "100px");
+tabbar.addTab("a4", "R H", "100px");
+tabbar.setContentHTML("a1", "<br><b>Serviços</b><br><br>Reserva de Espaços<br>Mural de Avisos<br>Avisos por E-mail<br>Sistema de Votação para novo Síndico<br>Convocação de Assembléias<br>Abertura de Ocorrências");
+tabbar.setContentHTML("a2", "<br><b>Financeiro</b><br><br>Plano de Contas<br>Fluxo de Caixa<br>Contas a pagar<br>Contas a receber<br> 2ª Via do Boleto<br>Importação de Retorno Bancário<br>Demonstrativos Mensais");
+tabbar.setContentHTML("a3", "<br><b>Gestão de Documentos</b><br><br>Acesso a Contratos<br>Acesso a Pautas de Reunião<br>Acesso ao Estatuto");
+tabbar.setContentHTML("a4", "<br><b>Recursos Humanos</b><br><br>Folha de Pagamento");
+tabbar.setTabActive("a1");
+
+</script>
+
+
+
+</BODY>
+</HTML>

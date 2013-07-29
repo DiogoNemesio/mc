@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "[url="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"]http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd[/url]">
+<html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<html>
+<head> 
+%LOAD_HTML%
+</head>
+<body>
+
+<table class="MCTable">
+	<tr class="MCTitulo">
+		<td align="left">Contato <br><br></td>
+	<tr>
+</table>
+
+<form action="%URL_FORM%">
+
+<table>
+	<tr>
+		<td class="MCTexto" align="left">%MENSAGEM%</td>
+	</tr>
+</table>
+
+<table class="MCTable" align="left">
+	<tr>
+		<td class="MCTexto" align="left">Nome*</td>
+	</tr>
+	<tr>
+		<td align="left"><input type="text" name="nome" size="40" maxlength="50" value=""></td>
+	</tr>
+	<tr>
+		<td class="MCTexto" align="left" class="MCTexto">Email*</td>
+	</tr>
+	<tr>
+		<td align="left"><input type="text" name="email" size="40" maxlength="40"value=""></td>
+	</tr>
+	<tr>
+		<td class="MCTexto" align="left">Telefone</td>
+	</tr>
+	<tr>
+		<td align="left"><input type="text" name="ddd" size="2" maxlength="2" value=""><input type="text" size="8" maxlength="8" name="telefone"></td>
+	</tr>
+	<tr>
+		<td class="MCTexto" align="left">Estado*</td>
+	</tr>
+	<tr>
+		<td class="MCTexto" align="left"><select name="estado">%ESTADOS%</td>
+	</tr>
+	<tr>
+		<td class="MCTexto" align="left">Cidade*</td>
+	</tr>
+	<tr>
+		<td align="left"><input type="text" name="cidade" size="40" maxlength="40" value=""></td>
+	</tr>
+	<tr>
+		<td class="MCTexto" align="left">Comentários:</td>
+	</tr>
+
+	<tr>
+		<td align="left"><textarea rows="5" cols="40" name="comentario" value=""></textarea></td>
+	</tr>
+	<tr>
+		<td align="left" class="MCTexto"><input type="checkbox" name="liberacao">Desejo receber informações por email</td>
+	</tr>
+	<tr>
+		<td align="center"><input type="submit" name="enviar" value="Enviar"></td>
+	</tr>
+
+</table>
+
+</form>
+
+</BODY>
+</HTML>

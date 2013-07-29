@@ -1,0 +1,6 @@
+<IfModule mod_rewrite.c>
+RewriteEngine on
+RewriteBase /
+RewriteCond $1 !^(app|site|favicon\.ico|robots\.txt|index\.php) [NC]
+RewriteRule ^(.*)$ /app/view/bin/urlManager.php?url=$1 [L]  
+</IfModule>
