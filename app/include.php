@@ -20,16 +20,16 @@ include_once ('autoLoad.php');
 /**
  * Checar se a configuração do Web Server está OK
  */
-//if ($_SERVER ['DOCUMENT_ROOT']) {
+if ($_SERVER ['DOCUMENT_ROOT']) {
 	include_once (DOC_ROOT . '/check.php');
-//}
+}
 
 /**
  * Gerenciamento de sessão
  */
-//if ($_SERVER ['DOCUMENT_ROOT']) {
+if ($_SERVER ['DOCUMENT_ROOT']) {
 	include_once ('session.php');
-//}
+}
 
 /**
  * Alterar o parâmetro do php para fazer buffer
@@ -39,6 +39,6 @@ ini_set ( 'output_buffer', 65535 );
 /**
  * Inicializar o sistema
  */
-//if ($_SERVER ['DOCUMENT_ROOT']) {
+if ($_SERVER ['DOCUMENT_ROOT']) {
 	include_once (DOC_ROOT . '/system.php');
-//}
+}

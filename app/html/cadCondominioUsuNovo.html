@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "[url="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"]http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd[/url]">
+<html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head> 
+	%LOAD_HTML%
+</head>
+<body class="MCBody">
+<form id="FMenuID" method="POST" action="%URL_FORM%">
+<input type="hidden" name="tab" value="tCad">
+<table>
+	<tr>
+		<td align="Left" class="MCTexto">Condominio:</td>
+		<td align="Left"><select class="MCObject" name="condominio">%CONDOMINIOS%</select></td>
+	</tr>
+</table>
+<table class="MCTable">
+	<tr class="MCTableImpar"><td align="Left" class="MCTexto"><b>&nbsp;<b></td></tr>
+</table>
+<table class="MCTable">
+	<tr>
+		<td align="Left" class="MCTexto">Usuário:</td>
+		<td align="Left" class="MCMiniTexto"><input type="text" class="MCObject" name="usuario" size="35" maxlength="20" value="%USUARIO%" %RO%> (*)</td>
+	</tr>
+	<tr>	
+		<td align="Left" class="MCTexto">Nome:</td>
+		<td align="Left"><input type="text" class="MCObject" name="nome" size="60" maxlength="60" value="%NOME%" %RO%></td>
+	</tr>
+	<tr>
+		<td align="Left" class="MCTexto">Email:</td>
+		<td align="Left"><input type="text" class="MCObject" name="email" size="60" maxlength="60" value="%EMAIL%"></td>
+	</tr>
+	<tr>
+		<td align="Left" class="MCTexto">Tipo Usuário:</td>
+		<td align="Left"><select class="MCObject" name="tipoUsuario">%TIPO_USUARIO%</select></td>
+	</tr>
+</table>
+<table class="MCTable">
+	<tr class="MCTableImpar"><td align="Left" class="MCTexto"><b>&nbsp;<b></td></tr>
+</table>
+<table>
+	<tr>
+		<td align="Left" class="MCTexto">Senha:</td>
+		<td align="Left"><input type="password" class="MCObject" name="senha1"  size="35" maxlength="30"></td>
+	</tr>
+	<tr>
+		<td align="Left" class="MCTexto">Repita a senha:</td>
+		<td align="Left"><input type="password" class="MCObject" name="senha2" size="35" maxlength="30"></td>
+	</tr>
+</table>
+<table class="MCTable">
+	<tr>
+		<td><input type="submit" name="salvar" value="SALVAR"></td>
+	</tr>
+</table>
+</form>
+<script>
+	//dhtmlx.skin = "%SKIN_NAME%";
+	window.dhx_globalImgPath="%HTMLX_IMG_URL%";
+    //dhxComboEstado.enableFilteringMode(true);
+    dhxComboEstado.attachChildCombo(dhxComboCidade,"%BIN_URL%/getXMLCidades.php?cidade=%COD_CIDADE%");
+	dhxComboCidade.show(true);
+	dhxComboEstado.readonly(true);
+	dhxComboCidade.readonly(true);
+    //dhxComboEstado.enableOptionAutoWidth(true);
+    
+
+  </script>
+</body>
+</html>

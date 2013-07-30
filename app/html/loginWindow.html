@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "[url="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"]http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd[/url]">
+<html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	%LOAD_HTML%
+</head>
+<body leftmargin="0" marginheight="0" marginwidth="0" topmargin="0">
+<br>
+<script>var vTextMessage	= '%MENSAGEM%';mostraMensagem();</script>
+<div align="center">
+<div id="winVP" style="position:relative; width:420px; height: 220px; border: #cecece 1px solid; margin: 12px;"></div>
+<div id="form_container" style="width:280px;height:200px;"></div>
+</div>
+<script>
+dhxWins = new dhtmlXWindows();
+dhxWins.enableAutoViewport(false);
+dhxWins.attachViewportTo("winVP");
+dhxWins.setImagePath("%HTMLX_IMG_URL%");
+dhxWins.setSkin("%SKIN_NAME%");
+var w1 = dhxWins.createWindow("w1",0,0,300,300);
+w1.setText("Login no Sistema");
+w1.button("close").disable();
+w1.setMaxDimension("auto", "auto");
+w1.maximize();
+w1.denyResize();
+w1.denyPark();
+w1.attachURL("%BIN_URL%/loginForm.php?info=%INFO%");
+var myToolbar = w1.attachStatusBar();
+myToolbar.setText("%SB_MESSAGE%");
+</script>
+
+</body>
+</html>

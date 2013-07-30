@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "[url="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"]http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd[/url]">
+<html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	%LOAD_HTML%
+	<style>
+    html, body {
+        margin: 0px;
+        padding: 0px;
+        overflow: hidden;
+    }
+	</style>
+	
+</head>
+<body class="MCBody">
+<div align="center">
+<div id="winVP" style="position:relative; width:420px; height: 200px;"></div>
+</div>
+<script>
+dhxWins = new dhtmlXWindows();
+dhxWins.enableAutoViewport(false);
+dhxWins.attachViewportTo("winVP");
+dhxWins.setImagePath("%HTMLX_IMG_URL%");
+dhxWins.setSkin("%SKIN_NAME%");
+var w1 = dhxWins.createWindow("w1",0,0,400,200);
+w1.setText("Mensagem");
+w1.button("park").hide();
+w1.button("help").hide();
+w1.button("stick").hide();
+w1.button("minmax1").hide();
+w1.button("minmax2").hide();
+w1.setMaxDimension("auto", "auto");
+w1.maximize();
+w1.denyResize();
+w1.denyPark();
+dhxWins.attachEvent("onClose", function(win){
+	fechaMensagem();
+});
+w1.attachURL("%BIN_URL%/mensagem.php?mensagem=%MENSAGEM%");
+
+</script>
+
+</body>
+</html>

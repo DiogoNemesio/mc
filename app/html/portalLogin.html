@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "[url="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"]http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd[/url]">
+<html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	%LOAD_HTML%
+</head>
+<body leftmargin="0" marginheight="0" marginwidth="0" topmargin="0">
+<script>var vTextMessage	= '%MENSAGEM%';mostraMensagem();</script>
+<div align="center">
+<form action="%URL_FORM%" method="POST" id="fLogin" target="_top">
+	<div id="form_container" style="width:204px;height:90px;"></div>
+</form>
+</div>
+
+<script>
+var dhxForm;
+dhxForm = new dhtmlXForm("form_container");
+dhxForm.loadStructString('%XML_DATA%');
+dhxForm.setSkin("%SKIN_NAME%");
+dhxForm.attachEvent("onButtonClick", function(name, command){
+	if (name=="Login"){
+		document.getElementById('fLogin').submit();
+	}
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="%CHARSET%"?>
+<items>
+	<item type="settings" position="label-left"/>
+	<item type="fieldset" name="Identificação" label="Identificação">
+		<item type="input" name="nomeCondominio" label="Nome:" maxLength="60" labelWidth="120" inputWidth="320" value="%NOME_CONDOMINIO%" validate="NotEmpty"/>
+		<item type="input" name="idCondominio" label="Identificação:" maxLength="20" labelWidth="120" inputWidth="200" value="%ID_CONDOMINIO%" validate="NotEmpty"/>
+	</item>   
+	<item type="fieldset" name="Endereço" label="Endereço">
+		<item type="input" name="endereco" label="Endereço:" value="%ENDERECO%" maxLength="60" labelWidth="120" inputWidth="320"/>
+		<item type="input" name="bairro" label="Bairro:" value="%BAIRRO%" maxLength="60" labelWidth="120" inputWidth="200"/>
+		<item type="input" name="numero" label="Número:" value="%NUMERO%" maxLength="10" labelWidth="120" inputWidth="60"/>
+		<item type="input" name="cep" label="Cep:" className="TCMask[cep]" value="%CEP%" maxLength="9" labelWidth="120" inputWidth="100"/>
+		<item type="combo" name="codEstado" label="Estado:" labelWidth="120" inputWidth="280" validate="NotEmpty"/>
+		<item type="combo" name="codCidade" label="Cidade:" labelWidth="120" inputWidth="280"/>
+	</item>   
+	<item type="fieldset" name="Outros" label="Outros">
+		<item type="input" name="numUnidades" label="Número de Unidades:" value="%NUM_UNIDADES%" maxLength="4" labelWidth="120" inputWidth="60" validate="ValidInteger"/>
+	</item>   
+	<item type="button" name="Salvar" value="Salvar" width="80"/>
+	<item type="hidden" name="id" value="%ID%"/>
+</items>

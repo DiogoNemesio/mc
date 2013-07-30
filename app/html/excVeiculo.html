@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "[url="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"]http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd[/url]">
+<html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head> 
+	%LOAD_HTML%
+</head>
+<body class="MCBody">
+<BR>
+<BR>
+<div align="center">
+	<div id="form_container" style="width:600px;height:40px;"></div>
+</div>
+<script>
+var dhxForm;
+dhxForm = new dhtmlXForm("form_container");
+dhxForm.setSkin("%FORM_SKIN_NAME%");
+dhxForm.loadStructString('%XML_DATA%');
+dhxForm.attachEvent("onButtonClick", function(name, command){
+	if (name=="excluir") {
+		MCApplyFormValues(dhxForm);
+		this.send("%URL_FORM%","post",function(loader,response) {
+			if (response !== '') {
+				vTextMessage	= response;
+			}else{
+				vTextMessage	= "Veículo Excluído com sucesso !!";
+			}
+			mostraMensagem();
+		});
+	}
+	if (name=="voltar") {
+		window.open("%VOLTAR%",'_self');
+	}
+
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "[url="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"]http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd[/url]">
+<html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	%LOAD_HTML%
+</head>
+<body leftmargin="0" marginheight="0" marginwidth="0" topmargin="0">
+<br>
+<div align="center">
+<form action="%URL_FORM%" method="POST" id="fLogin" target="_top">
+<table align="center" class="mcTable">
+<tr>
+	<td><img src="%IMG_URL%/seguranca.png" class="mcImg"></td>
+	<td><div id="form_container" style="width:280px;height:120px;"></div></td>
+</tr>
+</table>
+</form>
+</div>
+<script>
+var dhxForm;
+dhxForm = new dhtmlXForm("form_container");
+dhxForm.loadStructString('%XML_DATA%');
+dhxForm.setSkin("%FORM_SKIN_NAME%");
+dhxForm.attachEvent("onButtonClick", function(name, command){
+	if (name=="Login"){
+		document.getElementById('fLogin').submit();
+	}
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="%CHARSET%"?>
+<items>
+	<item type="settings" position="label-left"/>
+	<item type="fieldset" name="Identificação" label="Identificação">
+		<item type="combo" name="codUnidade" label="Unidade:" labelWidth="100" inputWidth="180" validate="NotEmpty"/>
+		<item type="combo" name="codMarca" label="Marca:" labelWidth="100" inputWidth="180"/>
+		<item type="input" name="modelo" label="Modelo:" maxLength="40" labelWidth="100" inputWidth="120" value="%MODELO%"/>
+		<item type="newcolumn" offset="20"/>
+		<item type="input" name="cor" label="Cor:" maxLength="20" labelWidth="100" inputWidth="120" value="%COR%"/>
+		<item type="input" name="placa" label="Placa:" className="MCMask-placa" maxLength="8" labelWidth="100" inputWidth="120" value="%PLACA%"/>
+	</item>   
+	<item type="block" name="Block1">
+		<item type="button" name="Salvar" value="Salvar" width="80"/>
+		<item type="newcolumn" offset="20"/>
+		<item type="button" name="voltar" value="Voltar" width="80"/>
+	</item>
+	<item type="hidden" name="id" value="%ID%"/>
+	<item type="hidden" name="codVeiculo" value="%COD_VEICULO%"/>
+</items>

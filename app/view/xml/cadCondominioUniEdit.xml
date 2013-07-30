@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="%CHARSET%"?>
+<items>
+	<item type="settings" position="label-left"/>
+	<item type="fieldset" name="Identificação" label="Identificação">
+		<item type="combo" name="codBloco" label="Bloco:" labelWidth="100" inputWidth="180" validate="NotEmpty"/>
+		<item type="combo" name="codTipo" label="Tipo:" labelWidth="100" inputWidth="180" validate="NotEmpty"/>
+		<item type="input" name="fone" label="Fone:" className="TCMask[fone]" maxLength="14" labelWidth="100" inputWidth="120" value="%FONE%"/>
+		<item type="combo" name="codVencimento" label="Vencimento:" labelWidth="100" inputWidth="180"/>
+		<item type="newcolumn" offset="20"/>
+		<item type="input" name="nome" label="Nome:" maxLength="20" labelWidth="100" inputWidth="120" value="%NOME%" validate="NotEmpty"/>
+		<item type="combo" name="codResponsavel" label="Responsável:" labelWidth="100" inputWidth="180"/>
+		<item type="input" name="celular" label="Celular:" className="TCMask[fone]" maxLength="14" labelWidth="100" inputWidth="120" value="%CELULAR%"/>
+		<item type="input" name="ramal" label="Ramal:" maxLength="8" labelWidth="100" inputWidth="120" value="%RAMAL%" validate="isNumeric"/>
+	</item>   
+	<item type="block" name="Block1">
+		<item type="button" name="Salvar" value="Salvar" width="80"/>
+		<item type="newcolumn" offset="20"/>
+		<item type="button" name="voltar" value="Voltar" width="80"/>
+	</item>
+	<item type="hidden" name="id" value="%ID%"/>
+	<item type="hidden" name="codUnidade" value="%COD_UNIDADE%"/>
+</items>

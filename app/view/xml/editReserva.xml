@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="%CHARSET%"?>
+<items>
+	<item type="settings" position="label-left"/>
+	<item type="fieldset" name="Informações da Reserva" label="Informações da Reserva">
+		<item type="combo" name="codUnidade" label="Unidade:" labelWidth="120" inputWidth="280" validate="NotEmpty"/>
+		<item type="combo" name="codEspaco" label="Espaço:" labelWidth="120" inputWidth="280" validate="NotEmpty"/>
+	</item>   
+	<item type="block" name="Block1">
+		<item type="button" name="formSubmit" value="OK" width="80"/>
+		<item type="newcolumn" offset="20"/>
+		<item type="button" name="voltar" value="Voltar" width="80"/>
+	</item>
+	<item type="hidden" name="id" value="%ID%"/>
+	<item type="hidden" name="codReserva" value="%COD_RESERVA%"/>
+</items>

@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "[url="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"]http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd[/url]">
+<html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head> 
+	%LOAD_HTML%
+	<style>
+    html, body {
+        width: %MCW%;
+        height: 100%;
+        margin: 0px;
+    	padding: 0px;
+        overflow: hidden;
+    }
+	</style>
+</head>
+<body>
+<div class='MCPortalConteudo'>
+	<div id='toolbarObj'></div>
+	<iframe name="IFCentral" frameborder="0" height="%ALTURA%" width="100%" src="%SITE_BIN_URL%/home.php"></iframe>
+<table class="MCTable">
+	<tr class="MCTableFim">
+		<td align="left" class="MCTextoBranco">Todos os direitos reservados</td>
+		<td align="left" class="MCTextoBranco"> Copyright © 2010 :: Mega Condomínio</td>
+	</tr>
+</table>
+</div>
+<script>
+	var toolbar = new dhtmlXToolbarObject("toolbarObj","%SKIN_NAME%");
+	toolbar.setIconsPath("%SITE_IMG_URL%");
+	toolbar.loadXML('%XML_URL%/menu.xml');
+	toolbar.attachEvent("onClick", function(itemId) {
+		window.open('%SITE_URL%bin/'+itemId,'IFCentral');
+	});
+</script>
+</body>
+</html>

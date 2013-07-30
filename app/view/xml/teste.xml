@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items>
+	<item type="settings" position="label-left"/>
+	<item type="fieldset" name="Identificação" label="Identificação">
+		<item type="input" name="valor" label="Valor:" maxLength="40" labelWidth="120" inputWidth="320" value="%NOME%" className="MCMask-money"/>
+		<item type="input" name="Teste" label="Teste:" maxLength="40" labelWidth="120" inputWidth="320" value="" className="MCMask-decimal" />
+	</item>   
+</items>

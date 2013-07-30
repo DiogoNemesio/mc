@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="%CHARSET%"?>
+<items>
+	<item type="settings" position="label-left"/>
+	<item type="fieldset" name="Parametros" label="Parâmetros">
+		<item type="block" name="Block1">
+			<item type="input" name="diaPagSal" label="Dia do Pagamento do Salário:" maxLength="2" labelWidth="190" inputWidth="40" value="%DIA_PAG_SAL%" validate="MCValidaDiaMes"/>
+			<item type="newcolumn" offset="20"/>
+			<item type="combo" name="codSkin" label="Skin:" labelWidth="80" inputWidth="140" validate="NotEmpty"/>
+		</item>
+		<item type="block" name="Block2">
+			<item type="combo" name="codPlanUni" label="Plano de Contas das Unidades:" labelWidth="190" inputWidth="280"/>
+		</item>
+	</item>
+	<item type="block" name="BlockS">
+		<item type="button" name="salvar" value="salvar" width="80"/>
+	</item>
+	<item type="hidden" name="id" value="%ID%"/>
+</items>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="%CHARSET%"?>
+<items>
+	<item type="settings" position="label-left"/>
+	<item type="fieldset" name="f1" label="Pesquisa Condomínios" labelWidth="320">
+		<item type="input" name="nomeCondominio" label="Condomínio:" maxLength="30" labelWidth="120" inputWidth="200" value="%NOME_CONDOMINIO%" validate="NotEmpty"/>
+		<item type="newcolumn" offset="20"/>
+		<item type="button" name="Pesquisar" value="Pesquisar" width="100"/>
+	</item>
+	<item type="hidden" name="id" value="%ID%"/>
+</items>

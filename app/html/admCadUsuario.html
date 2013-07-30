@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "[url="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"]http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd[/url]">
+<html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	%LOAD_HTML%
+</head>
+<body>
+<script>var vTextMessage	= '%MENSAGEM%';mostraMensagem();</script>
+<br>
+<div id="winVP" style="position:relative; height: 420px; border: #cecece 1px solid; margin: 5px;"></div>
+<div id="GUsuarios" style="height:340px;"></div>
+<script>
+dhxWins = new dhtmlXWindows();
+dhxWins.enableAutoViewport(false);
+dhxWins.attachViewportTo("winVP");
+dhxWins.setImagePath("%HTMLX_IMG_URL%");
+dhxWins.setSkin("%SKIN_NAME%");
+var w1 = dhxWins.createWindow("w1",0,0,300,280);
+w1.setText("Cadastro de Usuários");
+w1.button("close").disable();
+w1.setMaxDimension("auto", "auto");
+w1.maximize();
+
+
+var myToolbar = w1.attachStatusBar();
+myToolbar.setText("<div id='pagingArea'></div>");
+
+</script>
+
+%JS_CODE%
+
+<script>
+
+w1.attachObject('GUsuarios');
+
+var bAdd	= '0_Add';
+myToolbar = GUsuarios.aToolBar;
+myToolbar.setIconsPath("%HTMLX_IMG_URL%");
+myToolbar.addButton(bAdd, 0, 'Adicionar', 'MCAdd.png', 'MCAdd.png');
+myToolbar.attachEvent("onClick", function(itemId) {
+	if (itemId == bAdd) {
+		window.open('%BIN_URL%editUsuario.php?id=%ID%','_self');
+	}
+});
+
+</script>
+</body>
+</html>

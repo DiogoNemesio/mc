@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "[url="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"]http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd[/url]">
+<html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head> 
+	%LOAD_HTML%
+</head>
+<body>
+<br>
+<table class="MCTable">
+	<tr><td align="Left" class="MCTexto">Localização: %LOCAL%</td></tr>
+</table>
+<br>
+<div id="Tabbar" style="position:relative; margin:6px; height:460px;"></div>
+<script>
+	var	dhxTabbar;
+	var	dhxSkin		= "%SKIN_NAME%";
+	var mostraTabs	= "%MOSTRAABA%";
+	var codUsuario	= "%COD_USUARIO%";
+	
+	dhxTabbar		= new dhtmlXTabBar("Tabbar");
+	dhxTabbar.enableAutoReSize(true);
+	dhxTabbar.setImagePath("%HTMLX_IMG_URL%");
+	dhxTabbar.setSkin(dhxSkin);
+	dhxTabbar.setHrefMode("iframe");
+
+    dhxTabbar.addTab("tCad", "Cadastro"		,"80px");
+    if ((mostraTabs != '') && (codUsuario != '')) {
+	    dhxTabbar.addTab("tCon", "Condomínios"		,"80px");
+    }
+    
+	dhxTabbar.setContentHref("tCad","%BIN_URL%cadUsuarioCad.php?id=%ID%");
+    if ((mostraTabs != '') && (codUsuario != '')) {
+		dhxTabbar.setContentHref("tCon","%BIN_URL%cadUsuarioCon.php?id=%ID%");
+    }
+
+	dhxTabbar.setTabActive('tCad');
+</script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "[url="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"]http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd[/url]">
+<html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<html>
+<head>
+	<link rel="shortcut icon" href="%IMG_URL%/%ICON_IMG%">
+	%LOAD_HTML%
+	<title>.:: Mega Condomínio - %IDENTIFICACAO%::.</title>
+	<script language="Javascript">
+
+	function isMSIE() {
+		var bName	= navigator.appName;
+		if (bName.toUpperCase() == 'MICROSOFT INTERNET EXPLORER') return 1;
+		else return 0;
+	}
+	
+	function setUrl() {
+		/** Descobre qual a resolucao que está sendo usada  **/
+		w		= window.screen.width;
+		h		= window.screen.height;
+		
+		/** Monta a url **/
+		var sUrlMain	= '%BIN_URL%portal.php?codCondominio=%COD_CONDOMINIO%&w='+w+'&h='+h;
+		
+		/** Define a url com a resolução do cliente **/
+		FMain			= document.getElementById('FMain');
+		if (isMSIE() == 1) {
+			FMain.location	= sUrlMain;
+		}else{
+			FMain.src		= sUrlMain;
+		}
+	}
+	</script>
+
+</head>
+<frameset cols="*" onload="setUrl();">
+   <frame id="FMain" name="FMain" frameborder="0" marginheight="0" marginwidth="0">
+   </frame>
+</frameset>
+</html>

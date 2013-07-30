@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "[url="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"]http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd[/url]">
+<html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head> 
+	%LOAD_HTML%
+</head>
+<body>
+<br>
+<table class="MCTable">
+	<tr><td align="Left" class="MCTexto">Localização: %LOCAL%</td></tr>
+</table>
+<br>
+<div id="TabCondominio" style="position:relative; margin:6px; height:400px;"></div>
+<script>
+	var	dhxTabbar;
+	var	dhxSkin		= "%SKIN_NAME%";
+	var mostraTabs	= "%COD_CONDOMINIO%";
+	dhxTabbar		= new dhtmlXTabBar("TabCondominio");
+	dhxTabbar.enableAutoReSize(true);
+	dhxTabbar.setImagePath("%HTMLX_IMG_URL%");
+	dhxTabbar.setSkin(dhxSkin);
+	dhxTabbar.setHrefMode("iframe");
+
+    dhxTabbar.addTab("tCad", "Cadastro"		,"80px");
+    if (mostraTabs != '') {
+	    dhxTabbar.addTab("tBlo", "Blocos"		,"80px");
+	    dhxTabbar.addTab("tUni", "Unidades"		,"80px");
+	    dhxTabbar.addTab("tPar", "Parâmetros"	,"80px");
+    }
+    
+	dhxTabbar.setContentHref("tCad","%BIN_URL%cadCondominioCad.php?tab=tCad&id=%ID%&err=%MENSAGEM%");
+    if (mostraTabs != '') {
+		dhxTabbar.setContentHref("tBlo","%BIN_URL%cadCondominioBlo.php?tab=tBlo&id=%ID%&err=%MENSAGEM%");
+		dhxTabbar.setContentHref("tUni","%BIN_URL%cadCondominioUni.php?tab=tUni&id=%ID%&err=%MENSAGEM%");
+		dhxTabbar.setContentHref("tPar","%BIN_URL%cadCondominioPar.php?tab=tPar&id=%ID%&err=%MENSAGEM%");
+    }
+
+	//dhxTabbar.setOffset('4');
+	//dhxTabbar.setMargin('200px');
+	//dhxTabbar.enableTabCloseButton(true);
+	dhxTabbar.setTabActive('%TAB%');
+
+	
+</script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="%CHARSET%"?>
+<items>
+	<item type="settings" position="label-left"/>
+	<item type="fieldset" name="Identificação" label="Identificação">
+		<item type="combo" name="codUnidade" label="Unidade:" labelWidth="100" inputWidth="180" validate="NotEmpty"/>
+		<item type="input" name="nome" label="Nome:" maxLength="100" labelWidth="100" inputWidth="120" value="%NOME%" validate="NotEmpty"/>
+		<item type="input" name="fone" label="Fone:" className="TCMask[fone]" maxLength="14" labelWidth="100" inputWidth="120" value="%FONE%"/>
+		<item type="newcolumn" offset="20"/>
+		<item type="combo" name="codTipoSexo" label="Sexo:" labelWidth="100" inputWidth="180" validate="NotEmpty"/>
+		<item type="combo" name="codUsuario" label="Usuario:" labelWidth="100" inputWidth="180"/>
+	</item>   
+	<item type="block" name="Block1">
+		<item type="button" name="Salvar" value="Salvar" width="80"/>
+		<item type="newcolumn" offset="20"/>
+		<item type="button" name="voltar" value="Voltar" width="80"/>
+	</item>
+	<item type="hidden" name="id" value="%ID%"/>
+	<item type="hidden" name="codMorador" value="%COD_MORADOR%"/>
+</items>

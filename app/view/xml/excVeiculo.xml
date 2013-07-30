@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="%CHARSET%"?>
+<items>
+	<item type="settings" position="label-left"/>
+	<item type="fieldset" name="Confirmação" label="Confirmação">
+		<item type="label" name="label1" label="Deseja Realmente excluir o Veículo %PLACA% ?" labelWidth="600"/>
+	</item>
+	<item type="block" name="Block1">
+		<item type="button" name="excluir" value="Excluir" width="80"/>
+		<item type="newcolumn" offset="20"/>
+		<item type="button" name="voltar" value="Voltar" width="80"/>
+	</item>
+	<item type="hidden" name="id" value="%ID%"/>
+</items>

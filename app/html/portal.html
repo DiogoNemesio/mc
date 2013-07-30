@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "[url="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"]http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd[/url]">
+<html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head> 
+	%LOAD_HTML%
+	<style>
+    html, body {
+        width: %MCW%;
+        height: 100%;
+        margin: 0px;
+    	padding: 0px;
+        overflow: hidden;
+    }
+    #DivNome {
+    	width: %HEADERW%;
+		display:-moz-inline-stack;
+		display:inline-block;
+		zoom:1;
+		*display:inline;
+	} 
+    #DivCond {
+		display:-moz-inline-stack;
+		display:inline-block;
+		zoom:1;
+		*display:inline;
+	} 
+	</style>
+</head>
+<body>
+<script>
+
+dhtmlx.image_path='%HTMLX_IMG_URL%';
+var dhxLayout;
+var activeSkin = "%SKIN_NAME%";
+dhxLayout = new dhtmlXLayoutObject(document.body, "3T", activeSkin);
+
+/*dhxLayout.cont.obj._offsetTop 		= 1; 	// top margin
+dhxLayout.cont.obj._offsetHeight 	= -2; 	// bottom margin
+dhxLayout.cont.obj._offsetLeft 		= 1; 	// left margin
+dhxLayout.cont.obj._offsetWidth 	= -2; 	// right margin
+dhxLayout.setSizes();*/
+
+//var MCHeader	= "<div id='DivNome'><img src='%IMG_URL%/miniIcon.png' border='0'>&nbsp;.:: MegaCondomínio ::.</div><div id='DivCond'><select value='OK' class='MCObject'>%CONDS%</select></div>"; 
+var MCHeader	= "<div id='DivNome' class='mcImg' onclick='window.open(\\\"%SITE_URL%\\\");'><img src='%IMG_URL%/miniIcon.png' border='0'>&nbsp;.:: MegaCondomínio ::.&nbsp;</div><div id='DivCond'>Portal do Condomínio: %NOME%</div>";
+var cab = dhxLayout.cells('a');
+cab.setText(MCHeader);
+cab.setHeight('102');
+cab.fixSize(0,1);
+cab.attachURL('%BIN_URL%portalCab.php?id=%ID%');
+
+var b = dhxLayout.cells('b');
+b.setWidth('210');
+//b.setWidth('280');
+b.hideHeader();
+b.fixSize(1,0);
+
+	var b1 = b.attachLayout('2E');
+	var login = b1.cells('a');
+	login.setHeight('126');
+	//login.setHeight('166');
+	login.setText('Login no Sistema');
+	//login.hideHeader();
+	login.fixSize(0,1);
+	login.attachURL("%BIN_URL%portalLogin.php?id=%ID%");
+
+	var mural = b1.cells('b');
+	mural.setText('Mural');
+	//mural.hideHeader();
+
+var c = dhxLayout.cells('c');
+c.hideHeader();
+c.attachURL('%BIN_URL%portalBody.php?id=%ID%');
+
+
+
+</script>
+</body>
+</html>

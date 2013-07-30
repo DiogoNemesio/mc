@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="%CHARSET%"?>
+<items>
+	<item type="settings" position="label-left"/>
+	<item type="input" name="usuario" label="Usuário:" maxLength="18" labelWidth="48" inputWidth="100"/>
+	<item type="password" name="senha" label="Senha:" maxLength="18" labelWidth="48" inputWidth="100"/>
+	<item type="label" name="mensagem" label="%MENSAGEM%"/>
+	<item type="button" name="Login" value="Acessar" width="78"/>
+</items>

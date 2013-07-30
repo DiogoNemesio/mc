@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "[url="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"]http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd[/url]">
+<html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head> 
+	%LOAD_HTML%
+	
+	<script language="javascript">
+	function changeCidade (codCidade) {
+		var	f			= document.getElementById('FMenuID');
+		f.codMenu.value	= pCodMenu;
+		f.codTipoUsuario.value	= pCodTipoUsuario;
+		f.submit();
+	}
+	</script>
+</head>
+<body class="MCBody">
+<script>var vTextMessage	= '%MENSAGEM%';mostraMensagem();</script>
+<form id="FMenuID" method="post" action="%FORM_ACTION%" target="_parent">
+<input type="hidden" name="tab" value="tCad">
+<input type="hidden" name="id" value="%ID%">
+<div align="left">
+<table align="left" class="mcTable">
+	<tr><td><div id="form_container" style="width:600px;height:40px;"></div></td></tr>
+</table>
+</form>
+</div>
+<script>
+dhtmlx.skin = "%SKIN_NAME%";
+window.dhx_globalImgPath="%HTMLX_IMG_URL%";
+var dhxForm;
+dhxForm = new dhtmlXForm("form_container");
+dhxForm.setSkin("%FORM_SKIN_NAME%");
+dhxForm.loadStructString('%XML_DATA%');
+%DISABLE%
+dhxForm.attachEvent("onButtonClick", function(name, command){
+	if (name=="Salvar") {
+		MCApplyFormValues(dhxForm);
+		this.send("%URL_FORM%","post",function(loader,response) {
+			if (response !== '') {
+				if (isNumeric(response)) {
+					vTextMessage	= "Condomínio cadastrado com sucesso !!";
+				}else{
+					vTextMessage	= "Erro:"+response;					
+				}
+			}else{
+				vTextMessage	= "Informações salvas com sucesso !!";
+			}
+			mostraMensagem();
+		});
+	}
+	if (name=="voltar") {
+		voltarPagina();
+	}
+
+});
+var dhxComboEstado = dhxForm.getCombo("codEstado");
+var dhxComboCidade = dhxForm.getCombo("codCidade");
+//var dhxComboEstado = dhtmlXComboFromSelect("cEstados");
+//var dhxComboCidade = dhtmlXComboFromSelect("cCidades");
+dhxComboEstado.loadXMLString('%ESTADOS%');
+dhxComboCidade.loadXMLString('%CIDADES%');
+//dhxComboEstado.enableFilteringMode(true);
+dhxComboEstado.attachChildCombo(dhxComboCidade,"%BIN_URL%/getXMLCidades.php?cidade=%COD_CIDADE%");
+dhxComboCidade.show(true);
+dhxComboEstado.readonly(true);
+dhxComboCidade.readonly(true);
+dhxComboEstado.enableOptionAutoWidth(true);
+//dhxForm.getInput("cep").className = 'MCObject';
+//alert(dhxForm.getInput("cep").className);
+MCApplyMasks();
+</script>
+<script type="text/javascript">
+	window.onload = go;
+	function go(){
+		Typecast.Init();
+	}
+</script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "[url="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"]http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd[/url]">
+<html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head> 
+	%LOAD_HTML%
+</head>
+<body class="MCBody">
+<script>var vTextMessage	= '%MENSAGEM%';mostraMensagem();</script>
+<div align="left">
+<table align="left" class="mcTable">
+	<tr><td><div id="form_container" style="width:780px;height:60px;"></div></td></tr>
+</table>
+</div>
+<script>
+dhtmlx.skin = "%SKIN_NAME%";
+window.dhx_globalImgPath="%HTMLX_IMG_URL%";
+var dhxForm;
+dhxForm = new dhtmlXForm("form_container");
+dhxForm.loadStructString('%XML_DATA%');
+dhxForm.setSkin("%FORM_SKIN_NAME%");
+dhxForm.attachEvent("onButtonClick", function(name, command) {
+	if (name=="salvar") {
+		MCApplyFormValues(dhxForm);
+		this.send("%URL_FORM%","post",function(loader,response) {
+			if (response !== '') {
+				if (isNumeric(response)) {
+					vTextMessage	= "Parâmetros cadastrados com sucesso !!";
+				}else{
+					vTextMessage	= "Erro:"+response;
+				}
+			}else{
+				vTextMessage	= "Informações salvas com sucesso !!";
+			}
+			mostraMensagem();
+		});
+	}
+	/*if (name=="voltar") {
+		window.open('%VOLTAR%','_self');
+	}*/
+
+});
+var dhxComboSkin	= dhxForm.getCombo("codSkin");
+var dhxComboConta	= dhxForm.getCombo("codPlanoConta");
+
+dhxComboSkin.loadXMLString('%OSKINS%');
+dhxComboConta.loadXMLString('%OCONTAS%');
+
+dhxComboSkin.readonly(true);
+dhxComboConta.readonly(true);
+
+dhxComboSkin.enableOptionAutoWidth(true);
+dhxComboConta.enableOptionAutoWidth(true);
+
+MCApplyMasks();
+</script>
+<script type="text/javascript">
+	window.onload = go;
+	function go(){
+		Typecast.Init();
+	}
+</script>
+</body>
+</html>

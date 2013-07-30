@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "[url="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"]http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd[/url]">
+<html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head> 
+	%LOAD_HTML%
+	<script language="javascript">
+	function changeLocal (pCodMenu,pCodTipoUsuario) {
+		var	f			= document.getElementById('FMenuID');
+		f.codMenu.value	= pCodMenu;
+		f.codTipoUsuario.value	= pCodTipoUsuario;
+		f.submit();
+	}
+	function salvaMenu () {
+		var	f			= document.getElementById('FMenuID');
+		f.acao.value	= 'salvar';
+		f.submit();
+	}
+	function criarMenu () {
+		var	f			= document.getElementById('FMenuID');
+		f.acao.value	= 'criar';
+		f.submit();
+	}
+	function habilitaLink () {
+		var	f			= document.getElementById('FMenuID');
+		if (f.aCodTipo.value == 'L') {
+			f.aLink.disabled	= false;
+		}else{
+			f.aLink.disabled	= true;
+			f.aLink.value		= '';
+		}
+	}
+	</script>
+</head>
+<body class="MCBody">
+<form id="FMenuID" method="POST" action="%FORM_ACTION%">
+<input type="hidden" name="codMenu" value="%COD_MENU%">
+<input type="hidden" name="codMenuDe">
+<input type="hidden" name="codMenuPara">
+<input type="hidden" name="acao">
+<input type="hidden" name="codMenuDel">
+<table class="MCTable">
+	<tr class="MCTableImpar"><td align="left" class="MCTexto"><b>&nbsp;Informações Bancárias:<b></td></tr>
+</table>
+<table class="MCTable">
+	<tr>
+		<td align="Left" class="MCTexto">Banco:</td>
+		<td align="Left"><select class="MCObject" name="banco" onchange="habilitaLink();">%SEL_TIPO_MENU%</select></td>
+		
+	<tr>
+		<td align="Left" class="MCTexto">Agência:</td>
+		<td align="Left"><input type="text" class="MCObject" name="agencia" size="26" maxlength="40"></td>
+	</tr>
+	<tr>	
+		<td align="Left" class="MCTexto">Conta Corrente:</td>
+		<td align="Left"><input type="text" class="MCObject" name="cc" size="20" maxlength="20"></td>
+	</tr>
+	<tr>
+		<td align="Left" class="MCTexto">Saldo Inicial:</td>
+		<td align="Left"><input type="text" class="MCObject" name="saldoInicial" size="30" maxlength="100"></td>
+		<td align="Left" class="MCTexto">Carteira:</td>
+		<td align="Left"><input type="text" class="MCObject" name="carteira" onfocus="habilitaLink();" size="30" maxlength="100"></td>
+	</tr>
+</table>
+
+
+</div>
+</form>
+
+</body>
+</html>

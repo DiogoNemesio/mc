@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "[url="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"]http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd[/url]">
+<html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	%LOAD_HTML%
+</head>
+<body class="MCBody">
+<script>var vTextMessage	= '%MENSAGEM%';mostraMensagem();</script>
+<form action="%URL_FORM%" method="post" id="MCFormID">
+<div align="left">
+<table align="left" class="mcTable">
+	<tr><td><div id="form_container" style="width:%FORM_LARGURA%px;height:%FORM_ALTURA%px;"></div></td></tr>
+</table>
+</div>
+</form>
+<script>
+dhtmlx.skin = "%SKIN_NAME%";
+vRootUrl	= "%ROOT_URL%";
+window.dhx_globalImgPath="%HTMLX_IMG_URL%";
+var dhxForm;
+dhxForm = new dhtmlXForm("form_container");
+dhxForm.loadStructString('%XML_DATA%');
+dhxForm.setSkin("%FORM_SKIN_NAME%");
+dhxForm.attachEvent("onButtonClick", function(name, command) {
+	if (name=="dpSubmit") {
+		MCApplyFormValues(dhxForm);
+		this.send("%URL_DP%","post",function(loader,response) {
+			if (response.substr(0,4).toUpperCase() !== "ERRO") {
+				if (response !== '') {
+					vTextMessage  = "Registro incluído com sucesso !!";
+				}else{
+					vTextMessage  = "Informações salvas com sucesso !!";
+				}
+			}else{
+				vTextMessage = response;
+			}
+			mostraMensagem();
+		});
+	}else if (name=="formSubmit") {
+		document.getElementById('MCFormID').submit();
+	}else if (name=="voltar") {
+		window.open('%VOLTAR%','_self');
+	}else if (name=="open") {
+		window.open('%OPEN%','_self');
+	}
+
+});
+%COMBOS%
+
+MCApplyMasks();
+$('input').setMask();
+</script>
+</body>
+</html>

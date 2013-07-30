@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<toolbar>
+	<item id="home.php"		type="button"   img="menu-home.png"  imgdis="menu-home.png"  text="Home"  />
+	<item id="sep1" 	type="separator"/>
+	<item id="text1" 	type="text" text=" "/>
+	<item id="text2"  	type="text" text=" "/>
+	<item id="text3"   	type="text" text=" "/>
+	<item id="text4"   	type="text" text=" "/>
+	<item id="text5"   	type="text" text=" "/>
+	<item id="text6"   	type="text" text=" "/>
+	<item id="condominios.php"   type="button" img="menu-condominio.png"  imgdis="menu-condominio.png" text="Condomínios"/>
+	<item id="sep2" type="separator"/>
+	<item id="text1" 	type="text" text=" "/>
+	<item id="text2"  	type="text" text=" "/>
+	<item id="text3"   	type="text" text=" "/>
+	<item id="text4"   	type="text" text=" "/>
+	<item id="text5"   	type="text" text=" "/>
+	<item id="text6"   	type="text" text=" "/>
+	<item id="servicos.php"   type="button"  img="menu-servicos.png"  imgdis="menu-servicos.png" text="Serviços"  />
+	<item id="sep3" type="separator"/>
+	<item id="text1" 	type="text" text=" "/>
+	<item id="text2"  	type="text" text=" "/>
+	<item id="text3"   	type="text" text=" "/>
+	<item id="text4"   	type="text" text=" "/>
+	<item id="text5"   	type="text" text=" "/>
+	<item id="text6"   	type="text" text=" "/>
+	<item id="planos.php"    type="button"   img="menu-planos.png"   imgdis="menu-planos.png"   text="Planos"   />
+	<item id="sep4" type="separator"/>
+	<item id="text1" 	type="text" text=" "/>
+	<item id="text2"  	type="text" text=" "/>
+	<item id="text3"   	type="text" text=" "/>
+	<item id="text4"   	type="text" text=" "/>
+	<item id="text5"   	type="text" text=" "/>
+	<item id="text6"   	type="text" text=" "/>
+	<item id="contato.php"    type="button"   img="menu-contato.png"   imgdis="menu-contato.png"   text="Contato"   />
+	
+</toolbar>

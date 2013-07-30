@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "[url="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"]http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd[/url]">
+<html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head> 
+	%LOAD_HTML%
+	<script language="javascript">
+	function salvaMenu () {
+		var	f			= document.getElementById('FMenuID');
+		f.acao.value	= 'salvar';
+		f.submit();
+	}
+	function criarMenu () {
+		var	f			= document.getElementById('FMenuID');
+		f.acao.value	= 'criar';
+		f.submit();
+	}
+	</script>
+</head>
+<body class="MCBody">
+<table class="MCTable">
+	<tr><td><div id="form_container" style="width:720px;height:70px;"></div></td></tr>
+</table>
+<table class="MCTable">
+	<tr class="MCTableImpar"><td align="Left" class="MCTexto"><b>&nbsp;Condomínios sem acesso:<b></td></tr>
+</table>
+<div id="dataView1" style="width:100%;height:120px;" class="MCDataView"></div>
+<div id="paging_here" style="width:100%;height:36px;"></div>
+<table class="MCTable">
+	<tr class="MCTableImpar"><td align="Left" class="MCTexto"><b>&nbsp;Condomínios com Acesso:<b></td></tr>
+</table>
+<div id="dataView2" style="width:100%;height:120px;" class="MCDataView"></div>
+<div id="form2" style="width:720px;height:1px;"></div>
+<script>
+var view1 = new dhtmlXDataView({
+	container:"dataView1",
+	select: true,
+	type:{
+		template:"&nbsp;#nomeCondominio#",
+		template_loading:"Carregando ...",
+		width:180,
+		height:20,
+		margin:4,
+		padding:0,
+		css:"MC"
+	},
+    pager:{
+        container:"paging_here",
+        size:20,
+        group:6,
+        template: "{common.first()}{common.pages()}{common.last()}"
+    },
+	drag:true
+   });
+
+
+view1.attachEvent("onBeforeDrop",function(context){
+	if (context.to != context.from) {
+		var itemDe		= context.from.get(context.source[0]);
+		dhxForm2.send("%URL_FORM%?id=%ID%&acao=del&codCondNao=&codCondSim="+itemDe.codCondominio,"post",function(loader,response) {
+			if (response !== '') {
+				vTextMessage	= "Erro:"+response;
+				mostraMensagem();
+			}
+		});
+	}
+});
+
+var view2 = new dhtmlXDataView({
+	container:"dataView2",
+	select: true,
+	type:{
+		template:"&nbsp;#nomeCondominio#",
+		template_loading:"Carregando ...",
+		width:180,
+		height:20,
+		margin:4,
+		padding:0,
+		css:"MC"
+	},
+	drag:true
+
+   });
+view2.load('%BIN_URL%getXMLCondAcesso.php?id=%ID%','xml');
+view2.attachEvent("onBeforeDrop",function(context){
+	if (context.to != context.from) {
+		var itemDe		= context.from.get(context.source[0]);
+		dhxForm2.send("%URL_FORM%?id=%ID%&acao=add&codCondSim=&codCondNao="+itemDe.codCondominio,"post",function(loader,response) {
+			if (response !== '') {
+				vTextMessage	= "Erro:"+response;
+				mostraMensagem();
+			}
+		});
+	}
+});
+
+dhtmlx.skin = "%SKIN_NAME%";
+window.dhx_globalImgPath="%HTMLX_IMG_URL%";
+var dhxForm;
+dhxForm = new dhtmlXForm("form_container");
+dhxForm.loadStructString('%XML_DATA%');
+dhxForm.setSkin("%FORM_SKIN_NAME%");
+dhxForm.attachEvent("onButtonClick", function(name, command) {
+	if (name=="Pesquisar") {
+		if (dhxForm.validate()) {
+			nome	= dhxForm.getInput('nomeCondominio');
+			view1.clearAll();
+			view1.load('%BIN_URL%getXMLCondSemAcesso.php?id=%ID%&nomeCondominio='+nome.value,'xml');
+		}
+	}
+});
+
+dhxForm2 = new dhtmlXForm("form2");
+
+</script>
+<script type="text/javascript">
+	window.onload = go;
+	function go(){
+		Typecast.Init();
+	}
+</script>
+</body>
+</html>
