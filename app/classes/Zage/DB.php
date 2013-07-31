@@ -23,7 +23,7 @@ class DB {
 	/**
 	 * Objeto que irá guardar a instância do \Zend\DB
 	 */
-	public $db;
+	public $con;
 	
 	/**
 	 * Driver que será utilizado
@@ -149,7 +149,7 @@ class DB {
 			/**
 			 * Cria a adaptador da conexão
 			 */
-			$this->db = new \Zend\Db\Adapter\Adapter($dbParams);
+			$this->con = new \Zend\Db\Adapter\Adapter($dbParams);
 
 			/**
 			 * Testa se a conexao foi bem sucedida
@@ -160,11 +160,11 @@ class DB {
 			/**
 			 * Configura o modo de recuperação de dados
 			 **/
-			//$this->db->setFetchMode(Zend_Db::FETCH_OBJ);
+			//$this->con->setFetchMode(Zend_Db::FETCH_OBJ);
 	
 			//$this->Executa("ALTER SESSION SET NLS_NUMERIC_CHARACTERS = '.,'");
 			
-			//print_r($this->db);
+			//print_r($this->con);
 	
 		} catch (\Exception $e) {
 			Erro::halt($e->getMessage(),$e->getTraceAsString(),__CLASS__);
@@ -189,7 +189,7 @@ class DB {
 		}
 		
 		try {
-			$res	= @$this->db->query($sql);
+			$res	= @$this->con->query($sql);
 		}catch (\Zend\Db\Adapter\Exception\ExceptionInterface $e) {
 			$erro	= "[".__CLASS__."] [.".__FUNCTION__."]". $e->getPrevious() ? $e->getPrevious()->getMessage() : $e->getMessage();
 			Erro::halt($erro);
@@ -222,7 +222,7 @@ class DB {
 	public function extraiTodos($sql, $parametros = null) {
 		
 		try {
-			$stmt 		= $this->db->createStatement($sql);
+			$stmt 		= $this->con->createStatement($sql);
 			$stmt->prepare();
 			$result 	= $stmt->execute($parametros);
 			
@@ -253,7 +253,7 @@ class DB {
 	 */
 	public function extraiPrimeiro($sql, $parametros = null) {
 		try {
-			$stmt 		= $this->db->createStatement($sql);
+			$stmt 		= $this->con->createStatement($sql);
 			$stmt->prepare();
 			$result 	= $stmt->execute($parametros);
 			

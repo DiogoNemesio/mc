@@ -1,16 +1,15 @@
 <?php
 
 /**
- * Condomínio
+ * Usuários
  * 
- * @package: MCBloco
- * @created: 15/10/2010
+ * @package: Usuarios
  * @Author: Daniel Henrique Cassela
- * @version: 1.0
+ * @version: 1.0.1
  * 
  */
 
-class MCUsuarios {
+class Usuarios {
 
 	/**
      * Construtor
@@ -18,13 +17,12 @@ class MCUsuarios {
 	 * @return void
 	 */
 	private function __construct() {
-		global $system;
+		global $log;
 
-		$system->log->debug->debug(__CLASS__.": nova Instância");
+		$log->debug(__CLASS__.": nova Instância");
 	}
 	
 	/**
-	 * 
 	 * Criptografar a senha
 	 * @param string $usuario
 	 * @param string $senha
@@ -40,50 +38,49 @@ class MCUsuarios {
      * @return array
      */
      public static function salva (&$codUsuario, $usuario,$nome, $senha, $email, $codTipo, $codStatus, $codCondominio ) {
-		global $system;
 		
 		/** Checar se bloco já existe **/
-		if (MCUsuarios::existe ($usuario) == false && $codUsuario == null) {
+		if (\Usuarios::existe ($usuario) == false && $codUsuario == null) {
 			/** Inserir **/
-			$err = MCUsuarios::inserir($usuario,$nome, $senha, $email, $codTipo, $codStatus);
+			$err = \Usuarios::inserir($usuario,$nome, $senha, $email, $codTipo, $codStatus);
 			if (is_numeric($err)) {
 				$cod		= $err;
 				$codUsuario	= $cod;
-				if ($codCondominio != null)	MCUsuarios::associaCondominio($cod,$codCondominio);
+				if ($codCondominio != null)	\Usuarios::associaCondominio($cod,$codCondominio);
 				
 			}else{
 				return('Erro: '.$err);
 			}
 		}else{
 			/** Atualizar **/
-			return(MCUsuarios::update($codUsuario,$usuario, $nome, $senha, $email, $codTipo,$codStatus));
+			return(\Usuarios::update($codUsuario,$usuario, $nome, $senha, $email, $codTipo,$codStatus));
 		}
     }
 	
 	/**
-     * Inserir o condomínio no banco
+     * Inserir o usuário no banco
      *
      * @param integer $usuario
      * @return array
      */
     public static function inserir ($usuario,$nome, $senha, $email, $codTipo, $codStatus) {
-		global $system;
+		global $log,$db;
 		
 		try {
-			$system->db->con->beginTransaction();
-			$system->db->Executa("INSERT INTO USUARIOS (codUsuario,usuario,nome,senha,email,codTipo) VALUES (null,?,?,?,?,?,?)",
-				array($usuario,$nome,MCUsuarios::crypt($usuario, $senha),$email,$codTipo,$codStatus)
+			$db->con->beginTransaction();
+			$db->Executa("INSERT INTO USUARIOS (codUsuario,usuario,nome,senha,email,codTipo) VALUES (null,?,?,?,?,?,?)",
+				array($usuario,$nome,\Usuarios::crypt($usuario, $senha),$email,$codTipo,$codStatus)
 			);
 
-			$cod	= $system->db->con->lastInsertId();
-			$system->db->con->commit();
+			$cod	= $db->con->lastInsertId();
+			$db->con->commit();
 			if (!$cod) {
 				return('Erro:Não foi possível resgatar o código');
 			}else{
 				return($cod);
 			}
-		} catch (Exception $e) {
-			$system->db->con->rollback();
+		} catch (\Exception $e) {
+			$db->con->rollback();
 			return('Erro: '.$e->getMessage());
 		}
     }
@@ -95,71 +92,77 @@ class MCUsuarios {
      * @return array
      */
     public static function associaCondominio ($codUsuario,$codCondominio) {
-		global $system;
+		global $db;
 		
 		if (!$codUsuario || !$codCondominio) DHCErro::halt(__CLASS__.': Falta de parâmetros');
 		
-		if (MCUsuarios::temAcessoAoCondominio($codUsuario, $codCondominio) == true) {
+		if (\Usuarios::temAcessoAoCondominio($codUsuario, $codCondominio) == true) {
 			return ("Erro: Usuário já está associado a esse condomínio");
 		}
 		
 		try {
-			$system->db->con->beginTransaction();
-			$system->db->Executa("INSERT INTO USUARIO_CONDOMINIO (codUsuario,codCondominio) VALUES (?,?)",
+			$db->con->beginTransaction();
+			$db->Executa("INSERT INTO USUARIO_CONDOMINIO (codUsuario,codCondominio) VALUES (?,?)",
 				array($codUsuario,$codCondominio)
 			);
 			
-			$system->db->con->commit();
+			$db->con->commit();
 			
-		} catch (Exception $e) {
-			$system->db->con->rollback();
+		} catch (\Exception $e) {
+			$db->con->rollback();
 			return('Erro: '.$e->getMessage());
 		}
     }
     
     /**
-     * Desassociar o usuário ao condomínio
+     * Desassociar o usuário do condomínio
      *
      * @param integer $usuario
-     * @return array
+     * @param integer $codCondominio
+     * @return boolean
      */
     public static function desassociaCondominio ($codUsuario,$codCondominio) {
-		global $system;
+		global $db;
 		
 		if (!$codUsuario || !$codCondominio) DHCErro::halt(__CLASS__.': Falta de parâmetros');
 		
-		if (MCUsuarios::temAcessoAoCondominio($codUsuario, $codCondominio) == false) {
+		if (\Usuarios::temAcessoAoCondominio($codUsuario, $codCondominio) == false) {
 			return ("Erro: Usuário não está associado a esse condomínio");
 		}
 		
 		try {
-			$system->db->con->beginTransaction();
-			$system->db->Executa("DELETE FROM USUARIO_CONDOMINIO WHERE codUsuario = ? and codCondominio = ?",
+			$db->con->beginTransaction();
+			$db->Executa("DELETE FROM USUARIO_CONDOMINIO WHERE codUsuario = ? and codCondominio = ?",
 				array($codUsuario,$codCondominio)
 			);
 			
-			$system->db->con->commit();
+			$db->con->commit();
 			
-		} catch (Exception $e) {
-			$system->db->con->rollback();
+		} catch (\Exception $e) {
+			$db->con->rollback();
 			return('Erro: '.$e->getMessage());
 		}
     }
     
     /**
-     * Atualizar o condomínio no banco
-     *
-     * @param integer $usuario
-     * @return array
+     * Atualizar o usuário no banco
+     * @param integer $codUsuario
+     * @param string $usuario
+     * @param string $nome
+     * @param string $senha
+     * @param string $email
+     * @param integer $codTipo
+     * @param integer $codStatus
+     * @return NULL|string
      */
     public static function update ($codUsuario,$usuario, $nome, $senha, $email, $codTipo, $codStatus) {
-		global $system;
+		global $db;
 		
-		if ($senha !=null) {
+		if ($senha != null) {
 				
 			try {
-				$system->db->con->beginTransaction();
-				$system->db->Executa("
+				$db->con->beginTransaction();
+				$db->Executa("
 					UPDATE USUARIOS
 					SET		usuario			= ?,
 							nome			= ?,
@@ -168,18 +171,18 @@ class MCUsuarios {
 							codTipo			= ?,
 							codStatus		= ?
 					WHERE	codUsuario		= ?",
-					array($usuario,$nome,MCUsuarios::crypt($usuario, $senha),$email,$codTipo,$codStatus,$codUsuario)
+					array($usuario,$nome,\Usuarios::crypt($usuario, $senha),$email,$codTipo,$codStatus,$codUsuario)
 				);
-				$system->db->con->commit();
+				$db->con->commit();
 				return(null);
-			} catch (Exception $e) {
-				$system->db->con->rollback();
+			} catch (\Exception $e) {
+				$db->con->rollback();
 				return('Erro: '.$e->getMessage());
 			}
 		}else{
 			try {
-				$system->db->con->beginTransaction();
-				$system->db->Executa("
+				$db->con->beginTransaction();
+				$db->Executa("
 					UPDATE USUARIOS
 					SET		usuario			= ?,
 							nome			= ?,
@@ -189,10 +192,10 @@ class MCUsuarios {
 					WHERE	codUsuario		= ?",
 					array($usuario,$nome,$email,$codTipo,$codStatus,$codUsuario)
 				);
-				$system->db->con->commit();
+				$db->con->commit();
 				return(null);
-			} catch (Exception $e) {
-				$system->db->con->rollback();
+			} catch (\Exception $e) {
+				$db->con->rollback();
 				return('Erro: '.$e->getMessage());
 			}
 		}
@@ -201,13 +204,13 @@ class MCUsuarios {
     /**
      * Lista usuários de um condomínio
      *
-     * @return array
+     * @return \Zend\Db\ResultSet
      */
     public static function lista () {
-		global $system;
+		global $db;
 		
     	return (
-    		$system->db->extraiTodos("
+    		$db->extraiTodos("
 				SELECT	U.*, TU.descricao,TSU.descricao status
 				FROM	TIPO_USUARIO TU,
 						USUARIOS U,
@@ -219,17 +222,17 @@ class MCUsuarios {
    		);
     }
 
-    
     /**
      * Lista usuários de um condomínio e de um determinado tipo
-     *
-     * @return array
+     * @param unknown $codCondominio
+     * @param unknown $codTipo
+     * @return \Zend\Db\ResultSet
      */
     public static function listaPorTipo ($codCondominio,$codTipo) {
-		global $system;
+		global $db;
 		
     	return (
-    		$system->db->extraiTodos("
+    		$db->extraiTodos("
 				SELECT	U.*, TU.descricao,TSU.descricao status
 				FROM	TIPO_USUARIO TU,
 						USUARIOS U,
@@ -248,13 +251,13 @@ class MCUsuarios {
     /**
      * Lista todos os sindicos
      *
-     * @return array
+     * @return \Zend\Db\ResultSet
      */
     public static function listaSindicos () {
-		global $system;
+		global $db;
 						
     	return (
-    		$system->db->extraiTodos("
+    		$db->extraiTodos("
 				SELECT	U.*
 				FROM	USUARIOS U
 				WHERE 	U.codTipo = 'S'
@@ -266,13 +269,13 @@ class MCUsuarios {
      /**
      * Lista administradores 
      *
-     * @return array
+     * @return \Zend\Db\ResultSet
      */
     public static function listaAdmin () {
-		global $system;
+		global $db;
 						
     	return (
-    		$system->db->extraiTodos("
+    		$db->extraiTodos("
 				SELECT	U.*
 				FROM	USUARIOS U
 				WHERE 	U.codTipo = 'A'
@@ -281,16 +284,16 @@ class MCUsuarios {
    		);
     }
     
-      /**
+    /**
      * Lista os sub-sindicos 
      *
-     * @return array
+     * @return \Zend\Db\ResultSet
      */
     public static function listaSubSindicos () {
-		global $system;
+		global $db;
 						
     	return (
-    		$system->db->extraiTodos("
+    		$db->extraiTodos("
 				SELECT	U.*
 				FROM	USUARIOS U
 				WHERE 	U.codTipo = 'SS'
@@ -302,10 +305,11 @@ class MCUsuarios {
     /**
      * Lista os tipos de usuários
      *
-     * @return array
+     * @param integer $codTipo
+     * @return \Zend\Db\ResultSet
      */
     public static function listaTipoUsuario ($codTipo = null) {
-		global $system;
+		global $db;
 		
 		if ($codTipo != null) {
 			$where	= "WHERE TP.codTipo		= '".$codTipo."'";
@@ -314,7 +318,7 @@ class MCUsuarios {
 		}
 						
     	return (
-    		$system->db->extraiTodos("
+    		$db->extraiTodos("
 				SELECT	TP.*
 				FROM	TIPO_USUARIO TP
 				$where
@@ -326,13 +330,13 @@ class MCUsuarios {
     /**
      * Lista os tipos de status
      *
-     * @return array
+     * @return \Zend\Db\ResultSet
      */
     public static function listaTipoStatus() {
-		global $system;
+		global $db;
 		
     	return (
-    		$system->db->extraiTodos("
+    		$db->extraiTodos("
 				SELECT	TS.*
 				FROM	TIPO_STATUS_USUARIO TS
 				ORDER	BY descricao
@@ -344,12 +348,12 @@ class MCUsuarios {
      * Verifica se o Usuário existe
      *
      * @param string $usuario
-     * @return array
+     * @return boolean
      */
     public static function existe ($usuario) {
-		global $system;
+		global $db;
 		
-    	$info = $system->db->extraiPrimeiro("
+    	$info = $db->extraiPrimeiro("
 				SELECT 	COUNT(*) NUM
 				FROM 	USUARIOS U
 				WHERE 	U.usuario = '".$usuario."'
@@ -366,12 +370,12 @@ class MCUsuarios {
      * Verifica se o Código do Usuário existe
      *
      * @param integer $usuario
-     * @return array
+     * @return boolean
      */
     public static function existeCodigo ($codUsuario) {
-		global $system;
+		global $db;
 		
-    	$info = $system->db->extraiPrimeiro("
+    	$info = $db->extraiPrimeiro("
 				SELECT 	COUNT(*) NUM
 				FROM 	USUARIOS U
 				WHERE 	U.codUsuario = '".$codUsuario."'
@@ -388,13 +392,13 @@ class MCUsuarios {
      * Resgata as informações do condomínio
      *
      * @param integer $usuario
-     * @return array
+     * @return \Zend\Db\ResultSet
      */
     public static function getInfo ($codUsuario) {
-		global $system;
+		global $db;
 			
     	return (
-    		$system->db->extraiPrimeiro("
+    		$db->extraiPrimeiro("
 				SELECT	U.*,TU.descricao
 				FROM	USUARIOS U, TIPO_USUARIO TU
 				WHERE   U.codTipo	 = TU.codTipo
@@ -406,15 +410,15 @@ class MCUsuarios {
 
 	
     /**
-     * 
      * Verifica se o usuário tem acesso a um determinado condomínio
      * @param number $codUsuario
      * @param number $codCondominio
+     * @return boolean
      */
 	public static function temAcessoAoCondominio($codUsuario,$codCondominio) {
-		global $system;
+		global $db;
 			
-    	$return =  $system->db->extraiPrimeiro("
+    	$return =  $db->extraiPrimeiro("
 				SELECT	COUNT(*) NUM 
 				FROM	USUARIO_CONDOMINIO UC
 				WHERE   UC.codUsuario 		= '".$codUsuario."'
@@ -430,14 +434,14 @@ class MCUsuarios {
     }
 	
     /**
-     * 
      * Resgatar o condomínio do síndico
      * @param string $codUsuario
+     * @return integer
      */
     public static function getCondominio($codUsuario) {
-		global $system;
+		global $db;
 			
-    	$return =  $system->db->extraiPrimeiro("
+    	$return =  $db->extraiPrimeiro("
 				SELECT	UC.codCondominio
 				FROM	USUARIO_CONDOMINIO UC
 				WHERE   UC.codUsuario 		= '".$codUsuario."'
@@ -452,12 +456,13 @@ class MCUsuarios {
 
 
 	/**
-	 * 
 	 * Retorna os condomínios que o usuário não tem acesso
-	 * @param string $codUsuario
+	 * @param integer $codUsuario
+	 * @param string $nome
+     * @return \Zend\Db\ResultSet
 	 */
     public static function getCondominiosSemAcesso($codUsuario,$nome = null) {
-		global $system;
+		global $db;
 		
 		if ($nome != null) {
 			$and	= "AND		(C.nomeCondominio LIKE '%".$nome."%' OR C.condominio LIKE '%".$nome."%') "; 
@@ -465,7 +470,7 @@ class MCUsuarios {
 			$and	= "";
 		}
 			
-    	return($system->db->extraiTodos("
+    	return($db->extraiTodos("
 				SELECT	C.*
 				FROM	CONDOMINIOS C
 				WHERE   C.codCondominio NOT IN (
@@ -478,14 +483,14 @@ class MCUsuarios {
     }
     
 	/**
-	 * 
 	 * Retorna os condomínios que o usuário tem acesso
 	 * @param string $codUsuario
+     * @return \Zend\Db\ResultSet
 	 */
     public static function getCondominiosComAcesso($codUsuario) {
-		global $system;
+		global $db;
 		
-    	return($system->db->extraiTodos("
+    	return($db->extraiTodos("
 				SELECT	C.*
 				FROM	CONDOMINIOS C,
 						USUARIO_CONDOMINIO UC
@@ -498,31 +503,28 @@ class MCUsuarios {
 	 * Exclui um Usuário
 	 *
 	 * @param integer $codUsuario
-	 * @return array
+	 * @return null||string
 	 */
 	public static function exclui($codUsuario) {
-		global $system;
+		global $db;
 		
 		/** Verifica se o Usuário existe **/
-		if (MCUsuarios::existeCodigo($codUsuario) == false) return ('Erro: Usuário não existe');
+		if (\Usuarios::existeCodigo($codUsuario) == false) return ('Erro: Usuário não existe');
 		
 		
 		try {
-			$system->db->con->beginTransaction ();
+			$db->con->beginTransaction ();
 			
 			/** Desassocia o usuário dos condomínios **/ 
-			$system->db->Executa ("DELETE FROM USUARIO_CONDOMINIO WHERE codUsuario = ?", array ($codUsuario) );
+			$db->Executa ("DELETE FROM USUARIO_CONDOMINIO WHERE codUsuario = ?", array ($codUsuario) );
 			
 			/** Apaga o Usuário **/ 
-			$system->db->Executa ("DELETE FROM USUARIOS WHERE codUsuario = ?", array ($codUsuario) );
-			$system->db->con->commit ();
+			$db->Executa ("DELETE FROM USUARIOS WHERE codUsuario = ?", array ($codUsuario) );
+			$db->con->commit ();
 			return (null);
-		} catch ( Exception $e ) {
-			$system->db->con->rollback ();
+		} catch ( \Exception $e ) {
+			$db->con->rollback ();
 			return ('Erro: ' . $e->getMessage ());
 		}
 	}
-    
-    
-    
 }

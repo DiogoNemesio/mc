@@ -3,7 +3,7 @@ if ( (!isset($system)) || (!is_object($system)) || $system->estaIniciado() !== t
 	/** 
 	 * Instancia o sistema 
 	 **/
-	$system = \MegaCondominio::getInstance ();
+	$system = \Teste::getInstance ();
 	
 	/** 
 	 * Inicializa o sistema 

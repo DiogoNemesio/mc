@@ -1,6 +1,6 @@
 <?php
 
-namespace Zage;
+namespace Zage\Auth;
 
 /**
  * Gerenciar a autenticação
