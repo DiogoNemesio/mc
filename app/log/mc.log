@@ -72,3 +72,27 @@
 
 [2013-07-31T01:03:51+00:00] [7] [DEBUG] [Zage\DB: nova instância]
 
+[2013-07-30T22:44:04-03:00] [7] [DEBUG] [Zage\DB: nova instância]
+
+[2013-07-30T22:44:04-03:00] [3] [ERR] [Access denied for user 'megaUser'@'localhost' to database 'megaCondominio']
+
+[2013-07-30T22:46:25-03:00] [7] [DEBUG] [Zage\DB: nova instância]
+
+[2013-07-30T22:46:25-03:00] [3] [ERR] [Access denied for user 'megaUser'@'localhost' to database 'megaCondominio']
+
+[2013-07-30T22:48:42-03:00] [7] [DEBUG] [Zage\DB: nova instância]
+
+[2013-07-30T22:48:42-03:00] [3] [ERR] [Access denied for user 'megaUser'@'localhost' to database 'megaCondominio']
+
+[2013-07-30T22:49:04-03:00] [7] [DEBUG] [Zage\DB: nova instância]
+
+[2013-07-30T22:49:04-03:00] [3] [ERR] [Access denied for user 'megaUser'@'localhost' to database 'megaCondominio']
+
+[2013-07-30T22:52:20-03:00] [7] [DEBUG] [Zage\DB: nova instância]
+
+[2013-07-30T22:52:20-03:00] [3] [ERR] [Access denied for user 'megaUser'@'localhost' to database 'megaCondominio']
+
+[2013-07-30T22:54:41-03:00] [7] [DEBUG] [Zage\DB: nova instância]
+
+[2013-07-30T22:54:41-03:00] [7] [DEBUG] [MegaCondominio: nova Instância]
+

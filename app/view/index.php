@@ -1,40 +1,36 @@
 <?php
-if (defined ( 'DOC_ROOT' )) {
-	include_once (DOC_ROOT . 'include.php');
-} else {
-	include_once ('../include.php');
+
+if (defined('DOC_ROOT')) {
+	include_once(DOC_ROOT . 'include.php');
+}else{
+	include_once('../include.php');
 }
 
+/** Definindo o timezone padrão **/
+date_default_timezone_set($system->config["data"]["timezone"]);
 
-$tpl		= new \Zage\Template(\Zage\Util::getCaminhoCorrespondente(__FILE__, \Zage\ZWS::EXT_HTML));
-$menu	= new \Zage\Menu(\Zage\Menu::TIPO1);
+/** Resgatar o Skin que será usado **/
+//$skin	= $system->DBGetParametro('CODSKIN');
 
-$menu->adicionaPasta("CAD", "Cadastros", null);
-$menu->adicionaPasta("NOT", "Notas", null);
-$menu->adicionaPasta("REL", "Relatórios", null);
-$menu->adicionaLink("USU", "Usuários", null, "#", "Cad Usuários","CAD");
-$menu->adicionaSeparador("SEP1","CAD");
-$menu->adicionaLink("UNU", "Unimed", null, "#", "Cad Unimed","CAD");
-$menu->adicionaPasta("TIP", "Tipos", null,"CAD");
-$menu->adicionaLink("ACO", "Acomodação", null, "#", "Cad Acomodacao","TIP");
-$menu->adicionaLink("ATE", "ATendimento", null, "#", "Cad Atendimento","TIP");
-$menu->adicionaLink("RELNO", "Relação", null, "#", "Rel Notas","NOT");
-$menu->adicionaPasta("GER", "Gerencial", null,"REL");
-$menu->adicionaLink("CONTLIQ", "Contribuição Liq", null, "#", "Contribuição Liquida","GER");
-$menu->adicionaPasta("OPE", "Operacional", null,"REL");
-$menu->adicionaLink("RESFIN", "Resumo Financeiro", null, "#", "Resumo Financeiro","OPE");
-$menu->adicionaPasta("IMP", "Importações", null);
-$menu->adicionaLink("IMPPTU", "PTU", null, "#", "Imp PTU","IMP");
-$menu->adicionaPasta("OP", "Opções", null);
-$menu->adicionaLink("PAR", "Parâmetros", null, "#", "Parâmetros","OP");
-$menu->adicionaPasta("AJ", "Ajuda", null);
-$menu->adicionaLink("SOB", "Sobre", null, "#", "Sobre","AJ");
-$menu->adicionaLink("INI", "Início", null, "#", "Ir ao início");
-$menu->adicionaLink("SA", "Sair", null, "#", "Sair");
+/** Resgatar as configurações do skin **/
+//$system->setSkin($skin);
 
-$hMenu = $menu->getHtml();
+/** Verifica se o usuário está autenticado **/
+include_once(BIN_PATH . 'auth.php');
 
-$tpl->MENU	= $hMenu; 
-$tpl->show();
+/** Verifica o tipo de usuário para direcionar para o menu correto **/
+$info		= \Usuarios::getInfo($system->getCodUsuario());
+$codTipo	= $info->codTipo;
+
+/** Carregando o template html **/
+$template	= new DHCHtmlTemplate();
+$template->loadTemplate(HTML_PATH . 'admin.html');
+
+/** Define os valores das variáveis **/
+$template->assign('URL_FORM'	,$_SERVER['REQUEST_URI']);
+$template->assign('NOME_SISTEMA', $system->config["nome"]);
+
+/** Por fim exibir a página HTML **/
+echo $template->getHtmlCode();
 
 ?>

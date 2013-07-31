@@ -41,6 +41,21 @@ abstract class ZWS {
 	private $iniciado;
 	
 	/**
+	 * Instância da classe \Zage\Usuario
+	 *
+	 * @var object
+	 */
+	public $usuario;
+	
+	/**
+	 * Indica se o usuário ja está autenticado
+	 *
+	 * @var boolean
+	 */
+	public $autenticado;
+	
+	
+	/**
 	 * Construtor: Inicializa os objetos
 	 *
 	 * @return void
@@ -116,5 +131,42 @@ abstract class ZWS {
 	public function estaIniciado() {
 		return ($this->iniciado);
 	} 
+
+	/**
+	 * Resgatar o Usuário
+	 *
+	 * @return string
+	 */
+	public function getUsuario () {
+		if (is_object($this->usuario)) {
+			return $this->usuario->getUsuario();
+		}else{
+			return null;
+		}
+	}
+	
+	/**
+	 * Indicar que o usuário está autenticado
+	 */
+	public function setAutenticado() {
+		$this->autenticado = 1;
+	}
+	
+	/**
+	 * Desautenticar
+	 *
+	 */
+	public function desautentica() {
+		$this->autenticado = 0;
+	}
+	
+	/**
+	 * Verifica se o usuario ja está autenticado
+	 *
+	 * @return boolean
+	 */
+	public function estaAutenticado() {
+		return $this->autenticado;
+	}
 	
 }

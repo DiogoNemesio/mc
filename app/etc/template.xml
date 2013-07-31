@@ -13,7 +13,7 @@
 		<!-- Habilitado: 0 / 1 -->
 		<habilitado>1</habilitado>
 		<!-- Caminho relativo ao DOC_ROOT -->
-		<caminho>log/mc.log</caminho>
+		<caminho>log/zws.log</caminho>
 	</log>
 
 	<!-- Tratamento de data -->
@@ -24,9 +24,9 @@
 	<!-- Configurações de Banco de dados -->
 	<database>
 		<driver>Mysqli</driver>
-		<usuario>megaUser</usuario>
-		<senha>88830e4d45cf8f1ccea14119c30cc24fed1d9197e1c20e90c7bb39545dd1fa00cAfcfU1JBpBDnPrgHyWMt7CXiDLcIt7FmQ5H9jTrFFDC2pePWwemS8IMnEKyRj+c</senha>
-		<banco>megacondominio</banco>
+		<usuario>drFritz</usuario>
+		<senha>b38a5a8d7da250c8a87fa197986ef025397a20e4f685e52fe5a358cd3f40f1c7KT+vW/706lGaVRPIKanx7vTxCcDZXXsZ9EjySKFNZUK+1aM0WL0JGkCh2OuJSTQo</senha>
+		<banco>drFritz</banco>
 		<ip></ip>
 		<charset>UTF8</charset>
 		<indSenhaCript>1</indSenhaCript>
@@ -36,10 +36,10 @@
 	<!-- Configurações de E-Mail -->
 	<mail>
 		<!-- Nome do Remetente -->
-		<nomeRemetente>Mega Condomínio</nomeRemetente>
+		<nomeRemetente>ZWS</nomeRemetente>
 
 		<!-- Email do Remetente -->
-		<remetente>mc@localhost</remetente>
+		<remetente>zws@localhost</remetente>
 
 		<!-- Nome do Admin do Sistema -->
 		<nomeAdmin>Daniel Cassela</nomeAdmin>
