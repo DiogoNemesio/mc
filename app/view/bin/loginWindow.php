@@ -7,8 +7,8 @@ if (defined('DOC_ROOT')) {
 }
 
 /** Carregando o template html **/
-$template	= new DHCHtmlTemplate();
-$template->loadTemplate(MegaCondominio::getCaminhoCorrespondente(__FILE__, 'html'));
+$tpl	= new \Zage\Template();
+$tpl->load(\Zage\Util::getCaminhoCorrespondente(__FILE__, \Zage\ZWS::EXT_HTML));
 
 if (!isset($mensagem)) {
 	$mensagem	= null;
@@ -16,18 +16,22 @@ if (!isset($mensagem)) {
 
 
 if (isset($_GET['info'])) {
-	$info = DHCUtil::antiInjection($_GET["info"]);
+	$info = \Zage\Util::antiInjection($_GET["info"]);
 }else{
-	DHCErro::halt('Falta de Parâmetros (LoginWindow)');
+	\Zage\Erro::halt('Falta de Parâmetros (LoginWindow)');
 }
 
 
 /** Define os valores das variáveis **/
-$template->assign('INFO'		,$info);
-$template->assign('NOME_SISTEMA',$system->config->nome);
-$template->assign('MENSAGEM'	,$mensagem);
+$tpl->set('INFO'			,$info);
+$tpl->set('NOME_SISTEMA'	,$system->config["nome"]);
+$tpl->set('MENSAGEM'		,$mensagem);
+$tpl->set('SB_MESSAGE'		,"Megacondomínio todos os direitos reservados");
+$tpl->set('HTMLX_IMG_URL'	,HTMLX_IMG_URL);
+$tpl->set('SKIN'			,$system->getSkin());
+$tpl->set('SKIN_NAME'		,$system->getSkinName());
 
 /** Por fim exibir a página HTML **/
-echo $template->getHtmlCode();
+$tpl->show();
 
 ?>

@@ -6,9 +6,9 @@ if (defined('DOC_ROOT')) {
 	include_once('../include.php');
 }
 
-/** Carregando o template html **/
-$template	= new DHCHtmlTemplate();
-$template->loadTemplate(MegaCondominio::getCaminhoCorrespondente(__FILE__, 'html'));
+/** Carregando o $tpl html **/
+$tpl	= new \Zage\Template();
+$tpl->load(\Zage\Util::getCaminhoCorrespondente(__FILE__, \Zage\ZWS::EXT_HTML));
 
 if (!isset($mensagem)) {
 	$mensagem	= null;
@@ -16,27 +16,31 @@ if (!isset($mensagem)) {
 
 
 if (isset($_GET['info'])) {
-	$info = DHCUtil::antiInjection($_GET['info']);
+	$info = \Zage\Util::antiInjection($_GET['info']);
 }else{
 	DHCErro::halt('Falta de Parâmetros');
 }
 
 /** Descompactar as variáveis **/
-DHCUtil::descompactaId($info);
+\Zage\Util::descompactaId($info);
 
 if (!isset($URL_FORM)) {
-	DHCErro::halt('Falta de Parâmetros 2');
+	die('Falta de Parâmetros 2');
 }
 
-$xmlData	=	DHCUtil::getXmlData(MegaCondominio::getCaminhoCorrespondente(__FILE__, 'xml'));
+$xmlData	=	MegaCondominio::getXmlData(\Zage\Util::getCaminhoCorrespondente(__FILE__, \Zage\ZWS::EXT_XML,\Zage\ZWS::CAMINHO_ABSOLUTO));
 
 /** Define os valores das variáveis **/
-$template->assign('XML_DATA'	,$xmlData);
-$template->assign('URL_FORM'	,$URL_FORM);
-$template->assign('NOME_SISTEMA',$system->config->nome);
-$template->assign('MENSAGEM'	,$mensagem);
+$tpl->set('XML_DATA'		,$xmlData);
+$tpl->set('URL_FORM'		,$URL_FORM);
+$tpl->set('NOME_SISTEMA'	,$system->config["nome"]);
+$tpl->set('MENSAGEM'		,$mensagem);
+$tpl->set('SB_MESSAGE'		,"Megacondomínio todos os direitos reservados");
+$tpl->set('FORM_SKIN_NAME'	,$system->getFormSkinName());
+
+
 
 /** Por fim exibir a página HTML **/
-echo $template->getHtmlCode();
+$tpl->show();
 
 ?>

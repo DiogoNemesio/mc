@@ -1,5 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "[url="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"]http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd[/url]">
-<html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="pt-BR" >
 <head>
 	%LOAD_HTML%
 	<style type="text/css" media="all">
@@ -10,13 +10,6 @@
         	padding: 0px;
         	overflow: hidden;
     	}
-		.DMenu {
-			height: 100%;
-			border: #D42929 thin solid;
-	        margin: 0px;
-        	padding: 0px;
-		}
-
 		.DIFrame {
 			margin: 0px;
 			border: none;
@@ -25,19 +18,10 @@
 		}
 	</style>	
 </head>
-<!--<body leftmargin="0" marginheight="0" marginwidth="0" topmargin="0" onload="colorDiv();">-->
 <body leftmargin="0" marginheight="0" marginwidth="0" topmargin="0">
-<div class="DMenu"><div id='DMenu'></div></div>
-<div class="DIFrame">
-	<iframe scrolling="auto" marginheight="0" marginwidth="0" class='DIFrame' style="position: absolute; top:24px; left:0; height:98%; width:100%;" name="IFCentral"></iframe>
-</div>
 %MENU_CODE%
-<script>
-	function colorDiv() {
-		return;
-		var div	= document.getElementById('DMenu');
-		div.style.backgroundColor='#D42929';
-	}
-</script>
+<div class="DIFrame">
+	<iframe scrolling="auto" marginheight="0" marginwidth="0" class='DIFrame' style="position: absolute; top:48px; left:0; height:98%; width:100%; border: #000000 1px solid;" name="IFCentral"></iframe>
+</div>
 </body>
 </html>

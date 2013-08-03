@@ -6,12 +6,12 @@ if (defined('DOC_ROOT')) {
 	include_once('../include.php');
 }
 
-$js	= new DHCHtmlTemplate();
-$js->loadTemplate(JS_PATH . 'jquery.meio.mask.js');
-$js->assign('MASK_CONFIG', $system->mask->geraConfigMeioMask());
-$js->assign('FIXED_CHARS', $system->mask->geraCaracteresFixos());
-$js->assign('STARS', $system->mask->geraCaracteresEstrelas());
+$js	= new \Zage\Template();
+$js->load(JS_PATH . 'jquery.meio.mask.js');
+$js->set('MASK_CONFIG', $system->mask->geraConfigMeioMask());
+$js->set('FIXED_CHARS', $system->mask->geraCaracteresFixos());
+$js->set('STARS', $system->mask->geraCaracteresEstrelas());
 
-echo $js->getHtmlCode();
+$js->show();
 
 ?>

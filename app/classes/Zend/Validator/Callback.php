@@ -39,7 +39,7 @@ class Callback extends AbstractValidator {
 			'callback' => null, // Callback in a call_user_func format, string || array
 			'callbackOptions' => array ()  // Options for the callback
     )// Options for the callback
-	null;
+	;
 	
 	/**
 	 * Constructor

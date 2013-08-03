@@ -49,8 +49,8 @@ abstract class AbstractValidator implements Translator\TranslatorAwareInterface,
 			'translatorEnabled' => true, // Is translation enabled?
 			'valueObscured' => false  // Flag indicating whether or not value should be obfuscated
 	                                 // in error messages
-    )// in error messages
-	null;
+    );// in error messages
+	
 	
 	/**
 	 * Abstract constructor for all validators
@@ -66,7 +66,7 @@ abstract class AbstractValidator implements Translator\TranslatorAwareInterface,
 	public function __construct($options = null) {
 		// The abstract constructor allows no scalar values
         if// The abstract constructor allows no scalar values
-		null ($options instanceof Traversable) {
+		($options instanceof Traversable) {
 			$options = ArrayUtils::iteratorToArray ( $options );
 		}
 		

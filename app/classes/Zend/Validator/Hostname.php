@@ -704,7 +704,7 @@ class Hostname extends AbstractValidator {
 			'useTldCheck' => true, // Check TLD elements
 			'ipValidator' => null  // IP validator to use
     )// IP validator to use
-	null;
+	;
 	
 	/**
 	 * Sets validator options.
@@ -852,7 +852,7 @@ class Hostname extends AbstractValidator {
 		$this->setValue ( $value );
 		// Check input against IP address schema
         if// Check input against IP address schema
-		null (preg_match ( '/^[0-9a-f:.]*$/i', $value ) && $this->getIpValidator ()->setTranslator ( $this->getTranslator () )->isValid ( $value )) {
+		(preg_match ( '/^[0-9a-f:.]*$/i', $value ) && $this->getIpValidator ()->setTranslator ( $this->getTranslator () )->isValid ( $value )) {
 			if (! ($this->getAllow () & self::ALLOW_IP)) {
 				$this->error ( self::IP_ADDRESS_NOT_ALLOWED );
 				return false;
@@ -863,13 +863,13 @@ class Hostname extends AbstractValidator {
 		
 		// Local hostnames are allowed to be partial (ending '.')
         if// Local hostnames are allowed to be partial (ending '.')
-		null ($this->getAllow () & self::ALLOW_LOCAL) {
+		($this->getAllow () & self::ALLOW_LOCAL) {
 			if (substr ( $value, - 1 ) === '.') {
 				$value = substr ( $value, 0, - 1 );
 				if (substr ( $value, - 1 ) === '.') {
 					// Empty hostnames (ending '..') are not allowed
                     $this// Empty hostnames (ending '..') are not allowed
-					null->error ( self::INVALID_LOCAL_NAME );
+					->error ( self::INVALID_LOCAL_NAME );
 					return false;
 				}
 			}
@@ -879,20 +879,20 @@ class Hostname extends AbstractValidator {
 		
 		// Prevent partial IP V4 addresses (ending '.')
         if// Prevent partial IP V4 addresses (ending '.')
-		null ((count ( $domainParts ) == 4) && preg_match ( '/^[0-9.a-e:.]*$/i', $value ) && $this->getIpValidator ()->setTranslator ( $this->getTranslator () )->isValid ( $value )) {
+		((count ( $domainParts ) == 4) && preg_match ( '/^[0-9.a-e:.]*$/i', $value ) && $this->getIpValidator ()->setTranslator ( $this->getTranslator () )->isValid ( $value )) {
 			$this->error ( self::INVALID_LOCAL_NAME );
 		}
 		
 		// Check input against DNS hostname schema
         if// Check input against DNS hostname schema
-		null ((count ( $domainParts ) > 1) && (strlen ( $value ) >= 4) && (strlen ( $value ) <= 254)) {
+		((count ( $domainParts ) > 1) && (strlen ( $value ) >= 4) && (strlen ( $value ) <= 254)) {
 			$utf8StrWrapper = StringUtils::getWrapper ( 'UTF-8' );
 			$status = false;
 			
 			do {
 				// First check TLD
                 $matches// First check TLD
-				null = array ();
+				= array ();
 				if (preg_match ( '/([^.]{2,10})$/i', end ( $domainParts ), $matches ) || (array_key_exists ( end ( $domainParts ), $this->validIdns ))) {
 					reset ( $domainParts );
 					
@@ -903,7 +903,7 @@ class Hostname extends AbstractValidator {
 
                     // Match TLD against known list
                     $this// ldh: alpha / digit / dash
-					null->tld = strtolower ( $matches [1] );
+					->tld = strtolower ( $matches [1] );
 					if ($this->getTldCheck ()) {
 						if (! in_array ( $this->tld, $this->validTlds )) {
 							$this->error ( self::UNKNOWN_TLD );
@@ -931,11 +931,11 @@ class Hostname extends AbstractValidator {
 					
 					// Check each hostname part
                     $check// Check each hostname part
-					null = 0;
+					= 0;
 					foreach ( $domainParts as $domainPart ) {
 						// Decode Punycode domain names to IDN
                         if// Decode Punycode domain names to IDN
-						null (strpos ( $domainPart, 'xn--' ) === 0) {
+						(strpos ( $domainPart, 'xn--' ) === 0) {
 							$domainPart = $this->decodePunycode ( substr ( $domainPart, 4 ) );
 							if ($domainPart === false) {
 								return false;
@@ -944,7 +944,7 @@ class Hostname extends AbstractValidator {
 						
 						// Check dash (-) does not start, end or appear in 3rd and 4th positions
                         if// Check dash (-) does not start, end or appear in 3rd and 4th positions
-						null ((strpos ( $domainPart, '-' ) === 0) || ((strlen ( $domainPart ) > 2) && (strpos ( $domainPart, '-', 2 ) == 2) && (strpos ( $domainPart, '-', 3 ) == 3)) || (strpos ( $domainPart, '-' ) === (strlen ( $domainPart ) - 1))) {
+						((strpos ( $domainPart, '-' ) === 0) || ((strlen ( $domainPart ) > 2) && (strpos ( $domainPart, '-', 2 ) == 2) && (strpos ( $domainPart, '-', 3 ) == 3)) || (strpos ( $domainPart, '-' ) === (strlen ( $domainPart ) - 1))) {
 							$this->error ( self::INVALID_DASH );
 							$status = false;
 							break 2;
@@ -952,7 +952,7 @@ class Hostname extends AbstractValidator {
 						
 						// Check each domain part
                         $checked// Check each domain part
-						null = false;
+						= false;
 						foreach ( $regexChars as $regexKey => $regexChar ) {
 							ErrorHandler::start ();
 							$status = preg_match ( $regexChar, $domainPart );
@@ -979,14 +979,14 @@ class Hostname extends AbstractValidator {
 					
 					// If one of the labels doesn't match, the hostname is invalid
                     if// If one of the labels doesn't match, the hostname is invalid
-					null ($check !== count ( $domainParts )) {
+					 ($check !== count ( $domainParts )) {
 						$this->error ( self::INVALID_HOSTNAME_SCHEMA );
 						$status = false;
 					}
 				} else {
 					// Hostname not long enough
                     $this// Hostname not long enough
-					null->error ( self::UNDECIPHERABLE_TLD );
+					->error ( self::UNDECIPHERABLE_TLD );
 					$status = false;
 				}
 			} while ( false );
@@ -994,7 +994,7 @@ class Hostname extends AbstractValidator {
 			// If the input passes as an Internet domain name, and domain names are allowed, then the hostname
 			// passes validation
             if// passes validation
-			null ($status && ($this->getAllow () & self::ALLOW_DNS)) {
+			 ($status && ($this->getAllow () & self::ALLOW_DNS)) {
 				return true;
 			}
 		} elseif ($this->getAllow () & self::ALLOW_DNS) {
@@ -1003,7 +1003,7 @@ class Hostname extends AbstractValidator {
 		
 		// Check for URI Syntax (RFC3986)
         if// Check for URI Syntax (RFC3986)
-		null ($this->getAllow () & self::ALLOW_URI) {
+		 ($this->getAllow () & self::ALLOW_URI) {
 			if (preg_match ( "/^([a-zA-Z0-9-._~!$&\'()*+,;=]|%[[:xdigit:]]{2}){1,254}$/i", $value )) {
 				return true;
 			} else {
@@ -1021,20 +1021,20 @@ class Hostname extends AbstractValidator {
 		// If the input passes as a local network name, and local network names are allowed, then the
 		// hostname passes validation
         $allowLocal// hostname passes validation
-		null = $this->getAllow () & self::ALLOW_LOCAL;
+		= $this->getAllow () & self::ALLOW_LOCAL;
 		if ($status && $allowLocal) {
 			return true;
 		}
 		
 		// If the input does not pass as a local network name, add a message
         if// If the input does not pass as a local network name, add a message
-		null (! $status) {
+		(! $status) {
 			$this->error ( self::INVALID_LOCAL_NAME );
 		}
 		
 		// If local network names are not allowed, add a message
         if// If local network names are not allowed, add a message
-		null ($status && ! $allowLocal) {
+		($status && ! $allowLocal) {
 			$this->error ( self::LOCAL_NAME_NOT_ALLOWED );
 		}
 		
@@ -1053,7 +1053,7 @@ class Hostname extends AbstractValidator {
 		if (! preg_match ( '/^[a-z0-9-]+$/i', $encoded )) {
 			// no punycode encoded string
             $this// no punycode encoded string
-			null->error ( self::CANNOT_DECODE_PUNYCODE );
+			->error ( self::CANNOT_DECODE_PUNYCODE );
 			return false;
 		}
 		
@@ -1063,7 +1063,7 @@ class Hostname extends AbstractValidator {
 			for($x = 0; $x < $separator; ++ $x) {
 				// prepare decoding matrix
                 $decoded// prepare decoding matrix
-				null [] = ord ( $encoded [$x] );
+				[] = ord ( $encoded [$x] );
 			}
 		}
 		
@@ -1072,7 +1072,7 @@ class Hostname extends AbstractValidator {
 		
 		// decoding
         $init// decoding
-		null = true;
+		 = true;
 		$base = 72;
 		$index = 0;
 		$char = 0x80;
@@ -1112,7 +1112,7 @@ class Hostname extends AbstractValidator {
 		
 		// convert decoded ucs4 to utf8 string
         foreach// convert decoded ucs4 to utf8 string
-		null ( $decoded as $key => $value ) {
+		( $decoded as $key => $value ) {
 			if ($value < 128) {
 				$decoded [$key] = chr ( $value );
 			} elseif ($value < (1 << 11)) {

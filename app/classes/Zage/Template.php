@@ -5,20 +5,20 @@ namespace Zage;
 /**
  * Gerenciamento de templates HTML
  *
- * @package \Zage\Log
+ * @package \Zage\Template
  * @created 10/07/2013
  * @author Daniel Henrique Cassela
  * @version GIT: $Id$ 1.0.1
- *         
+ *
  */
 class Template {
-	
+
 	/**
-	 * Lista de variáveis
+	 * html do Template
 	 *
-	 * @var array
+	 * @var string
 	 */
-	private $vars = array ();
+	private $html;
 	
 	/**
 	 * Array com variáveis e valores definidos pelo usuário
@@ -26,20 +26,6 @@ class Template {
 	 * @var array
 	 */
 	private $values = array ();
-	
-	/**
-	 * Array com as propriedades dos objetos existentes no documento
-	 *
-	 * @var array
-	 */
-	private $properties = array ();
-	
-	/**
-	 * Array de instancias
-	 *
-	 * @var array
-	 */
-	private $instances = array ();
 	
 	/**
 	 * Lista de blocos
@@ -56,15 +42,6 @@ class Template {
 	private $parents = array ();
 	
 	/**
-	 * Describes the replace method for blocks.
-	 * See the Template::setFile()
-	 * method for more details.
-	 *
-	 * @var boolean
-	 */
-	private $accurate;
-	
-	/**
 	 * Expressão regular usada para encontrar variáveis e blocos
 	 * Apenas alfanuméricos e _ são permitidos
 	 *
@@ -73,156 +50,131 @@ class Template {
 	private static $REG_NAME = "([[:alnum:]]|_)+";
 	
 	/**
-	 * Cria um novo template, usando $filename como arquivo principal
+	 * Construtor
 	 *
-	 * Quando o parâmetro $accurate for true, a substituição dos blocos no arquivo
-	 * final será perfeitamente fiel ao arquivo original, isto é, todas as tabulações
-	 * serão removidas. Isso vai ter um pequeno prejuízo na performance, que pode variar
-	 * de acordo com a versão do PHP em uso. Mas é Útil quando estamos usando tags HTML
-	 * como &lt;pre&gt; ou &lt;code&gt;. Em outros casos, ou melhor, quase sempre,
-	 * nunca se mexe no valor de $accurate.
-	 *
-	 * @param string $filename
-	 *        	do arquivo que será lido
-	 * @param booelan $accurate
-	 *        	para fazer substituição fiel das tabulações
 	 */
-	public function __construct($filename, $accurate = false) {
-		$this->accurate = $accurate;
-		$this->loadfile ( ".", $filename );
+	public function __construct() {
 	}
-	
+
 	/**
-	 * Adiciona o conteúdo do arquivo identificado por $filename na variável de template
-	 * identificada por $varname
+	 * Carregar o arquivo de template
 	 *
-	 * @param string $varname
-	 *        	variável de template existente
-	 * @param string $filename
-	 *        	a ser carregado
+	 * @param string $template
 	 */
-	public function addFile($varname, $filename) {
-		if (! $this->exists ( $varname ))
-			throw new InvalidArgumentException ( "addFile: var $varname não existe" );
-		$this->loadfile ( $varname, $filename );
-	}
-	
-	/**
-	 * não use este método, ele serve apenas para podemos acessar as variáveis
-	 * de template diretamente.
-	 *
-	 * @param string $varname
-	 *        	name
-	 * @param mixed $value
-	 *        	value
-	 */
-	public function __set($varname, $value) {
-		// if(!$this->exists($varname)) throw new \RuntimeException("var $varname não existe");
-		if (! $this->exists ( $varname ))
-			return null;
-		$stringValue = $value;
-		if (is_object ( $value )) {
-			$this->instances [$varname] = $value;
-			if (! array_key_exists ( $varname, $this->properties ))
-				$this->properties [$varname] = array ();
-			if (method_exists ( $value, "__toString" ))
-				$stringValue = $value->__toString ();
-			else
-				$stringValue = "Object";
+	public function load ($template) {
+		global $system,$log;
+		
+		if ($this->html) {
+			die('Template já carregado !!!');
 		}
-		$this->setValue ( $varname, $stringValue );
-		return $value;
-	}
-	
-	/**
-	 * não use este método, ele serve apenas para podemos acessar as variáveis
-	 * de template diretamente.
-	 *
-	 * @param string $varname
-	 *        	name
-	 */
-	public function __get($varname) {
-		if (isset ( $this->values ["{" . $varname . "}"] ))
-			return $this->values ["{" . $varname . "}"];
-			// throw new \RuntimeException("var $varname não existe");
-		return null;
-	}
-	
-	/**
-	 * Verifica se uma variável de template existe.
-	 *
-	 * Retorna true se a variável existe. Caso contrário, retorna false.
-	 *
-	 * @param string $varname
-	 *        	name
-	 */
-	public function exists($varname) {
-		return in_array ( $varname, $this->vars );
-	}
-	
-	/**
-	 * Loads a file identified by $filename.
-	 *
-	 * The file will be loaded and the file's contents will be assigned as the
-	 * variable's value.
-	 * Additionally, this method call Template::recognize() that identifies
-	 * all blocks and variables automatically.
-	 *
-	 * @param string $varname
-	 *        	the name of a variable to load
-	 * @param string $filename
-	 *        	name to be loaded
-	 *        	
-	 * @return void
-	 */
-	private function loadfile($varname, $filename) {
-		if (! file_exists ( $filename ))
-			throw new InvalidArgumentException ( "arquivo $filename não existe" );
-			// If it's PHP file, parse it
-		if ($this->isPHP ( $filename )) {
-			ob_start ();
-			require $filename;
-			$str = ob_get_contents ();
-			ob_end_clean ();
-			$this->setValue ( $varname, $str );
-		} else {
-			// Reading file and hiding comments
-			$str = preg_replace ( "/<!---.*?--->/smi", "", file_get_contents ( $filename ) );
-			$this->setValue ( $varname, $str );
-			$blocks = $this->recognize ( $str, $varname );
-			if (empty ( $str ))
-				throw new InvalidArgumentException ( "arquivo $filename está vazio" );
-			$this->createBlocks ( $blocks );
+		
+		/** Lê o conteudo do arquivo **/
+		$this->html	= \Zage\Util::getConteudoArquivo($template);
+		
+		if (!$this->html) {
+			$log->warn('Template: '.$template. ' não carregado !!!');
 		}
+		
+		/** Substituir variáveis padrões **/
+		$this->__assignDefaultVariables();
+		
+		
+		/** Criando os blocos **/
+		$blocks = $this->recognize ( $this->html, "." );
+		$this->createBlocks ( $blocks );
 	}
+
 	
 	/**
-	 * Check if file is a .
-	 * php
+	 * Substitui valores pré-definidos
 	 */
-	private function isPHP($filename) {
-		foreach ( array (
-				'.php',
-				'.php5',
-				'.cgi' 
-		) as $php ) {
-			if (0 == strcasecmp ( $php, substr ( $filename, strripos ( $filename, $php ) ) ))
-				return true;
+	private function __assignDefaultVariables() {
+		global $system;
+		
+		if (isset($system) && is_object($system) && method_exists($system, 'loadHtml')) {
+			$this->set('LOAD_HTML'			,$system->loadHtml());
 		}
-		return false;
+		
+		/**
+		 * Definindo as constantes
+	 	 */
+		$this->set('ROOT_URL'	,ROOT_URL);
+		$this->set('CSS_URL'	,CSS_URL);
+		$this->set('PKG_URL'	,PKG_URL);
+		$this->set('BIN_URL'	,BIN_URL);
+		$this->set('HTML_URL'	,HTML_URL);
+		$this->set('IMG_URL'	,IMG_URL);
+		$this->set('JS_URL'		,JS_URL);
+		$this->set('DP_URL'		,DP_URL);
+		$this->set('XML_URL'	,XML_URL);
+		
+		if (defined(HTMLX_IMG_URL)) $this->set('HTMLX_IMG_URL'	,HTMLX_IMG_URL);
+		
+		/**
+		 * CharacterSet Default
+		 */
+		if (isset($system) && is_object($system) && (property_exists($system, "config")) && isset($system->config["charset"])) {
+			$this->set('CHARSET'	,$system->config["charset"]);
+		}
+		
+		/**
+		 * Skin padrão
+		 */
+		if (isset($system) && is_object($system) && (method_exists($system, "getSkin")) ) {
+			$this->set('SKIN'	,$system->getSkin());
+		}
+		
+	}
+
+	/**
+	 * Retornar o código html do template
+	 *
+	 */
+	public function getHtml() {
+		/** Substituir variáveis padrões **/
+		$this->__assignDefaultVariables();
+		$this->html = stripslashes($this->html);
+		return $this->html;
 	}
 	
 	/**
-	 * Identify all blocks and variables automatically and return them.
+	 * Exibir o código html
+	 *
+	 */
+	public function show() {
+		echo $this->getHtml();
+	}
+	
+	/**
+	 * Definir o valor de uma variável
+	 *
+	 * @param string $variable
+	 * @param string $value
+	 */
+	public function set($variable, $value) {
+		$this->html	= str_replace('%'.$variable.'%'	,$value	,$this->html);
+	}
+	
+	/**
+	 * Retira as quebras de linhas e adiciona a barra invertida
+	 *
+	 */
+	public function compile() {
+		$this->html	= str_replace(PHP_EOL	,' ',$this->html);
+		$this->html	= str_replace('\''	,'\\\'',$this->html);
+	}
+	
+	/**
+	 * Identifica todos os blocos automaticamente e retorna.
 	 *
 	 * All variables and blocks are already identified at the moment when
 	 * user calls Template::setFile(). This method calls Template::identifyVars()
 	 * and Template::identifyBlocks() methods to do the job.
 	 *
-	 * @param string $content        	
+	 * @param string $content
 	 * @param string $varname
 	 *        	variable name of the file
-	 *        	
+	 *
 	 * @return array array where the key is the block name and the value is an
 	 *         array with the children block names.
 	 */
@@ -230,8 +182,6 @@ class Template {
 		$blocks = array ();
 		$queued_blocks = array ();
 		foreach ( explode ( "\n", $content ) as $line ) {
-			if (strpos ( $line, "{" ) !== false)
-				$this->identifyVars ( $line );
 			if (strpos ( $line, "<!--" ) !== false)
 				$this->identifyBlocks ( $line, $varname, $queued_blocks, $blocks );
 		}
@@ -239,7 +189,7 @@ class Template {
 	}
 	
 	/**
-	 * Identify all user defined blocks automatically.
+	 * Identifica todos os blocos definidos no template
 	 *
 	 * @param string $line
 	 *        	one line of the content file
@@ -249,7 +199,7 @@ class Template {
 	 *        	a list of the current queued blocks
 	 * @param string $blocks
 	 *        	a list of all identified blocks in the current file
-	 *        	
+	 *
 	 * @return void
 	 */
 	private function identifyBlocks(&$line, $varname, &$queued_blocks, &$blocks) {
@@ -272,26 +222,6 @@ class Template {
 	}
 	
 	/**
-	 * Identifies all variables defined in the document.
-	 *
-	 * @param string $line
-	 *        	one line of the content file
-	 */
-	private function identifyVars(&$line) {
-		$r = preg_match_all ( "/{(" . self::$REG_NAME . ")((\-\>(" . self::$REG_NAME . "))*)?}/", $line, $m );
-		if ($r) {
-			for($i = 0; $i < $r; $i ++) {
-				// Object var detected
-				if ($m [3] [$i] && (! array_key_exists ( $m [1] [$i], $this->properties ) || ! in_array ( $m [3] [$i], $this->properties [$m [1] [$i]] ))) {
-					$this->properties [$m [1] [$i]] [] = $m [3] [$i];
-				}
-				if (! in_array ( $m [1] [$i], $this->vars ))
-					$this->vars [] = $m [1] [$i];
-			}
-		}
-	}
-	
-	/**
 	 * Create all identified blocks given by Template::identifyBlocks().
 	 *
 	 * @param array $blocks
@@ -303,7 +233,7 @@ class Template {
 		foreach ( $blocks as $parent => $block ) {
 			foreach ( $block as $chield ) {
 				if (in_array ( $chield, $this->blocks ))
-					throw new UnexpectedValueException ( "bloco duplicado: $chield" );
+					throw new \UnexpectedValueException ( "bloco duplicado: $chield" );
 				$this->blocks [] = $chield;
 				$this->setBlock ( $parent, $chield );
 			}
@@ -335,7 +265,7 @@ class Template {
 		} else
 			$reg = "/<!--\s*BEGIN\s+$block\s+-->\s*(\s*.*?\s*)<!--\s+END\s+$block\s*-->\s*/sm";
 		if (1 !== preg_match ( $reg, $str, $m ))
-			throw new UnexpectedValueException ( "bloco $block está mal formado" );
+			throw new \UnexpectedValueException ( "bloco $block está mal formado" );
 		$this->setValue ( $name, '' );
 		$this->setValue ( $block, $m [1] );
 		$this->setValue ( $parent, preg_replace ( $reg, "{" . $name . "}", $str ) );
@@ -358,142 +288,4 @@ class Template {
 		$this->values ["{" . $varname . "}"] = $value;
 	}
 	
-	/**
-	 * Returns the value of the variable identified by $varname.
-	 *
-	 * @param string $varname
-	 *        	of the variable to get the value of
-	 * @return string value of the variable passed as argument
-	 */
-	private function getVar($varname) {
-		return $this->values ['{' . $varname . '}'];
-	}
-	
-	/**
-	 * Limpa o valor de uma variável
-	 *
-	 * O mesmo que $this->setValue($varname, "");
-	 *
-	 * @param string $varname
-	 *        	da variável
-	 */
-	public function clear($varname) {
-		$this->setValue ( $varname, "" );
-	}
-	
-	/**
-	 * Fill in all the variables contained within the variable named
-	 * $varname.
-	 * The resulting value is returned as the function result and the
-	 * original value of the variable varname is not changed. The resulting string
-	 * is not "finished", that is, the unresolved variable name policy has not been
-	 * applied yet.
-	 *
-	 * @param string $varname
-	 *        	the name of the variable within which variables are to be substituted
-	 * @return string value of the variable $varname with all variables substituted.
-	 */
-	private function subst($varname) {
-		$s = $this->getVar ( $varname );
-		// Common variables replacement
-		$s = str_replace ( array_keys ( $this->values ), $this->values, $s );
-		// Object variables replacement
-		foreach ( $this->instances as $var => $instance ) {
-			foreach ( $this->properties [$var] as $properties ) {
-				if (false !== strpos ( $s, "{" . $var . $properties . "}" )) {
-					$pointer = $instance;
-					$property = explode ( "->", $properties );
-					for($i = 1; $i < sizeof ( $property ); $i ++) {
-						$obj = str_replace ( '_', '', $property [$i] );
-						// Non boolean accessor
-						if (method_exists ( $pointer, "get$obj" )) {
-							$pointer = $pointer->{"get$obj"} ();
-						}						// Boolean accessor
-						elseif (method_exists ( $pointer, "is$obj" )) {
-							$pointer = $pointer->{"is$obj"} ();
-						}						// Magic __get accessor
-						elseif (method_exists ( $pointer, "__get" )) {
-							$pointer = $pointer->__get ( $property [$i] );
-						} 						// Accessor dot not exists: throw Exception
-						else {
-							$className = $property [$i - 1] ? $property [$i - 1] : get_class ( $instance );
-							$class = is_null ( $pointer ) ? "NULL" : get_class ( $pointer );
-							throw new BadMethodCallException ( "não existe método na classe " . $class . " para acessar " . $className . "->" . $property [$i] );
-						}
-					}
-					// Checking if final value is an object
-					if (is_object ( $pointer )) {
-						if (method_exists ( $pointer, "__toString" )) {
-							$pointer = $pointer->__toString ();
-						} else {
-							$pointer = "Object";
-						}
-					}
-					// Replace
-					$s = str_replace ( "{" . $var . $properties . "}", $pointer, $s );
-				}
-			}
-		}
-		return $s;
-	}
-	
-	/**
-	 * Clear all child blocks of a given block.
-	 *
-	 * @param string $block
-	 *        	block with chield blocks.
-	 */
-	private function clearBlocks($block) {
-		if (isset ( $this->parents [$block] )) {
-			$chields = $this->parents [$block];
-			foreach ( $chields as $chield ) {
-				$this->clear ( "B_" . $chield );
-			}
-		}
-	}
-	
-	/**
-	 * Mostra um bloco.
-	 *
-	 * Esse método deve ser chamado quando um bloco deve ser mostrado.
-	 * Sem isso, o bloco não irá aparecer no conteúdo final.
-	 *
-	 * Se o parâmetro $append for true, o conteúdo do bloco será
-	 * adicionado ao conteúdo que já existia antes. Ou seja, use true
-	 * quando quiser que o bloco seja duplicado.
-	 *
-	 * @param string $block
-	 *        	do bloco que deve ser mostrado
-	 * @param boolean $append
-	 *        	se o conteúdo anterior deve ser mantido (ou seja, para duplicar o bloco)
-	 */
-	public function block($block, $append = true) {
-		if (! in_array ( $block, $this->blocks ))
-			throw new InvalidArgumentException ( "bloco $block não existe" );
-		if ($append)
-			$this->setValue ( "B_" . $block, $this->getVar ( "B_" . $block ) . $this->subst ( $block ) );
-		else
-			$this->setValue ( "B_" . $block, $this->subst ( $block ) );
-		$this->clearBlocks ( $block );
-	}
-	
-	/**
-	 * Retorna o conteúdo final, sem mostrá-lo na tela.
-	 *
-	 * Se você quer mostrá-lo na tela, use o método Template::show().
-	 *
-	 * @return string
-	 */
-	public function parse() {
-		// After subst, remove empty vars
-		return preg_replace ( "/{(" . self::$REG_NAME . ")((\-\>(" . self::$REG_NAME . "))*)?}/", "", $this->subst ( "." ) );
-	}
-	
-	/**
-	 * Mostra na tela o conteúdo final.
-	 */
-	public function show() {
-		echo $this->parse ();
-	}
 }
-?>

@@ -6,6 +6,6 @@ if (defined('DOC_ROOT')) {
 	include_once('../include.php');
 }
 
-echo MCMascara::geraConfigJS();
+echo \Mascara::geraConfigJS();
 exit;
 ?>

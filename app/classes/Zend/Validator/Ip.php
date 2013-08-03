@@ -35,7 +35,7 @@ class Ip extends AbstractValidator {
 			'allowipvfuture' => false, // Enable IPvFuture Validation
 			'allowliteral' => true  // Enable IPs in literal format (only IPv6 and IPvFuture)
     )// Enable IPs in literal format (only IPv6 and IPvFuture)
-	null;
+	;
 	
 	/**
 	 * Sets the options for this validator
@@ -96,15 +96,15 @@ class Ip extends AbstractValidator {
 		if (preg_match ( '/^([01]{8}.){3}[01]{8}$/i', $value )) {
 			// binary format  00000000.00000000.00000000.00000000
             $value// binary format 00000000.00000000.00000000.00000000
-			null = bindec ( substr ( $value, 0, 8 ) ) . '.' . bindec ( substr ( $value, 9, 8 ) ) . '.' . bindec ( substr ( $value, 18, 8 ) ) . '.' . bindec ( substr ( $value, 27, 8 ) );
+			 = bindec ( substr ( $value, 0, 8 ) ) . '.' . bindec ( substr ( $value, 9, 8 ) ) . '.' . bindec ( substr ( $value, 18, 8 ) ) . '.' . bindec ( substr ( $value, 27, 8 ) );
 		} elseif (preg_match ( '/^([0-9]{3}.){3}[0-9]{3}$/i', $value )) {
 			// octet format 777.777.777.777
             $value// octet format 777.777.777.777
-			null = ( int ) substr ( $value, 0, 3 ) . '.' . ( int ) substr ( $value, 4, 3 ) . '.' . ( int ) substr ( $value, 8, 3 ) . '.' . ( int ) substr ( $value, 12, 3 );
+			 = ( int ) substr ( $value, 0, 3 ) . '.' . ( int ) substr ( $value, 4, 3 ) . '.' . ( int ) substr ( $value, 8, 3 ) . '.' . ( int ) substr ( $value, 12, 3 );
 		} elseif (preg_match ( '/^([0-9a-f]{2}.){3}[0-9a-f]{2}$/i', $value )) {
 			// hex format ff.ff.ff.ff
             $value// hex format ff.ff.ff.ff
-			null = hexdec ( substr ( $value, 0, 2 ) ) . '.' . hexdec ( substr ( $value, 3, 2 ) ) . '.' . hexdec ( substr ( $value, 6, 2 ) ) . '.' . hexdec ( substr ( $value, 9, 2 ) );
+			= hexdec ( substr ( $value, 0, 2 ) ) . '.' . hexdec ( substr ( $value, 3, 2 ) ) . '.' . hexdec ( substr ( $value, 6, 2 ) ) . '.' . hexdec ( substr ( $value, 9, 2 ) );
 		}
 		
 		$ip2long = ip2long ( $value );
@@ -148,7 +148,7 @@ class Ip extends AbstractValidator {
 		
 		// special case with ending or starting double colon
         if// special case with ending or starting double colon
-		null ($colonCount == 8) {
+		 ($colonCount == 8) {
 			return preg_match ( '/\A(?:::)?(?:[a-f0-9]{1,4}:){6}[a-f0-9]{1,4}(?:::)?\z/i', $value );
 		}
 		

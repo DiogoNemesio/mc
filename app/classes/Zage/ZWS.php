@@ -146,6 +146,19 @@ abstract class ZWS {
 	}
 	
 	/**
+	 * Resgatar o Código do Usuário
+	 *
+	 * @return string
+	 */
+	public function getCodUsuario () {
+		if (is_object($this->usuario)) {
+			return $this->usuario->getCodUsuario();
+		}else{
+			return null;
+		}
+	}
+	
+	/**
 	 * Indicar que o usuário está autenticado
 	 */
 	public function setAutenticado() {

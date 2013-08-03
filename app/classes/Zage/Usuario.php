@@ -51,8 +51,7 @@ abstract class Usuario {
 	 * @param string $senha
 	 * @return boolean
 	 */
-    public abstract function autenticar ($usuario,$senha) {
-    }
+    public abstract function autenticar ($usuario,$senha);
     
     /**
      * Resgata as informações do usuário
@@ -60,8 +59,7 @@ abstract class Usuario {
      * @param integer $usuario
      * @return array
      */
-    public abstract function getInfo ($codUsuario) {
-    }
+    public abstract function getInfo ($codUsuario);
     
     /**
      * Resgatar o código do usuário

@@ -8,8 +8,9 @@ if (defined('DOC_ROOT')) {
 	include_once('../include.php');
 }
 
-
-/** Verificar se o usuário e senha estão sendo passados através do form **/
+#################################################################################
+## Verificar se o usuário e senha estão sendo passados através do form
+#################################################################################
 if ((isset($_POST['usuario'])) && (isset($_POST['senha']))) {
 	$usuario	= \Zage\Util::antiInjection($_POST['usuario']);
 	$senha		= \Zage\Util::antiInjection($_POST['senha']);
@@ -19,10 +20,14 @@ if ((isset($_POST['usuario'])) && (isset($_POST['senha']))) {
 	$senha		= '';
 }
 
-/** Limpando a variável da mensagem **/
+#################################################################################
+## Limpando a variável da mensagem
+#################################################################################
 $mensagem		= '';
 
-/** Verifica se o usuário já está conectado **/
+#################################################################################
+## Verifica se o usuário já está conectado
+#################################################################################
 if ((!$system->estaAutenticado())) {
 
 	if (($usuario) && ($senha)) {

@@ -6,6 +6,10 @@
 
 	<!-- CaracterSet Utilizado -->
 	<charset>UTF-8</charset>
+	
+	<!-- Nome do Sistema (Utilizado na barra inicial) -->
+	<nome>.:: Mega Condomínio ::.</nome>
+	
 
 	<!-- Tratamento de Log em arquivo -->
 	<log>

@@ -118,11 +118,11 @@ class InArray extends AbstractValidator {
 				self::COMPARE_STRICT, // 1
 				self::COMPARE_NOT_STRICT  // -1
         )// -1
-		null;
+		;
 		
 		// validate strict value
         if// validate strict value
-		null (! in_array ( $strict, $checkTypes )) {
+		(! in_array ( $strict, $checkTypes )) {
 			throw new Exception\InvalidArgumentException ( 'Strict option must be one of the COMPARE_ constants' );
 		}
 		
@@ -162,12 +162,12 @@ class InArray extends AbstractValidator {
 	public function isValid($value) {
 		// we create a copy of the haystack in case we need to modify it
         $haystack// we create a copy of the haystack in case we need to modify it
-		null = $this->getHaystack ();
+		= $this->getHaystack ();
 		
 		// if the input is a string or float, and vulnerability protection is on
 		// we type cast the input to a string
         if// we type cast the input to a string
-		null (self::COMPARE_NOT_STRICT_AND_PREVENT_STR_TO_INT_VULNERABILITY == $this->strict && (is_int ( $value ) || is_float ( $value ))) {
+		 (self::COMPARE_NOT_STRICT_AND_PREVENT_STR_TO_INT_VULNERABILITY == $this->strict && (is_int ( $value ) || is_float ( $value ))) {
 			$value = ( string ) $value;
 		}
 		
@@ -185,7 +185,7 @@ class InArray extends AbstractValidator {
 					
 					// add protection to prevent string to int vuln's
                     $el// add protection to prevent string to int vuln's
-					null = $element;
+					= $element;
 					if (self::COMPARE_NOT_STRICT_AND_PREVENT_STR_TO_INT_VULNERABILITY == $this->strict && is_string ( $value ) && (is_int ( $el ) || is_float ( $el ))) {
 						$el = ( string ) $el;
 					}

@@ -7,8 +7,8 @@ if (defined('DOC_ROOT')) {
 }
 
 
-$js	= new DHCHtmlTemplate();
-$js->loadTemplate(JS_PATH . 'megaCondominio.js');
-echo $js->getHtmlCode();
+$js	= new \Zage\Template();
+$js->load(JS_PATH . 'megaCondominio.js');
+$js->show();
 
 ?>

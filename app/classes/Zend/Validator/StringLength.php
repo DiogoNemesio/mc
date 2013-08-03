@@ -43,8 +43,8 @@ class StringLength extends AbstractValidator {
 			'min' => 0, // Minimum length
 			'max' => null, // Maximum length, null if there is no length limitation
 			'encoding' => 'UTF-8'  // Encoding to use
-    )// Encoding to use
-	null;
+    );// Encoding to use
+	
 	protected $stringWrapper;
 	
 	/**

@@ -50,19 +50,23 @@ class Botao extends \Zage\Grid\Coluna {
 		$url = (empty ( $valor ) ? "#" : $valor);
 		switch ($this->getModelo ()) {
 			case self::MOD_ADD :
-				$nome = "Adicionar";
+				$nome 	= "Adicionar";
 				$classe = "btn-info";
+				$icone	= "<i class='icon-plus icon-white'></i>";
 				break;
 			case self::MOD_EDIT :
-				$nome = "Editar";
+				$nome 	= "Editar";
 				$classe = "btn-info";
+				$icone	= "<i class='icon-edit icon-white'></i>";
 				break;
 			case self::MOD_REMOVE :
-				$nome = "Excluir";
+				$nome 	= "Excluir";
 				$classe = "btn-danger";
+				$icone	= "<i class='icon-remove icon-white'></i>";
 				break;
 		}
-		$html = "<a href='" . $url . "'><button class='btn btn-small " . $classe . "' type='button'>" . $nome . "</button></a>";
+		//$html = "<a href='" . $url . "'><button class='btn btn-small " . $classe . "' type='button'>" . $nome . "</button></a>";
+		$html = "<a href='" . $url . "'><button class='btn btn-mini " . $classe . "' type='button'>" . $icone . "</button></a>";
 		return ($html);
 	}
 	

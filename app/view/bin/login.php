@@ -7,8 +7,8 @@ if (defined('DOC_ROOT')) {
 }
 
 /** Carregando o template html **/
-$template	= new DHCHtmlTemplate();
-$template->loadTemplate(MegaCondominio::getCaminhoCorrespondente(__FILE__, 'html'));
+$tpl	= new \Zage\Template();
+$tpl->load(\Zage\Util::getCaminhoCorrespondente(__FILE__,\Zage\ZWS::EXT_HTML));
 
 if (!isset($mensagem)) {
 	$mensagem	= null;
@@ -17,13 +17,14 @@ if (!isset($mensagem)) {
 $info = base64_encode("URL_FORM=".$_SERVER['REQUEST_URI']."&mensagem=".$mensagem);
 
 /** Define os valores das variáveis **/
-$template->assign('PKG_PATH'	,PKG_PATH);
-$template->assign('XML_PATH'	,XML_PATH);
-$template->assign('INFO'		,$info);
-$template->assign('NOME_SISTEMA',$system->config->nome);
-$template->assign('MENSAGEM'	,$mensagem);
+$tpl->set("INFO"				,$info);
+$tpl->set('NOME_SISTEMA'		,$system->config["nome"]);
+$tpl->set("MENSAGEM"			,$mensagem);
+$tpl->set("ICON_IMG"			,"megaCondominio.png");
+$tpl->set("SKIN"				,$system->getSkinBaseDir());
+$tpl->set("SKIN_NAME" 			,$system->getSkinName());
 
 /** Por fim exibir a página HTML **/
-echo $template->getHtmlCode();
+$tpl->show();
 
 ?>

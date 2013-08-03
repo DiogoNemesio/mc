@@ -36,6 +36,12 @@ class Menu {
 	private $html;
 	
 	/**
+	 * Href Padrão onde os menus serão abertos
+	 * @var string
+	 */
+	private $target;
+	
+	/**
 	 * Array com a ordem correta dos itens do menu
 	 * @var array
 	 */
@@ -76,7 +82,7 @@ class Menu {
 			case self::TIPO1:
 				$this->html	= '<div class="navbar">';
 				$this->html	.= '<div class="navbar-inner">';
-				$this->html	.= '<ul class="nav" role="navigation">';
+				$this->html	.= '<ul class="nav navbar-nav" role="navigation">';
 				break;
 			default:
 				\Zage\Erro::halt('Tipo de Menu desconhecido !!!');
@@ -159,9 +165,10 @@ class Menu {
 		$this->itens[$codigo]->setCodigo($codigo);
 		$this->itens[$codigo]->setNome($nome);
 		$this->itens[$codigo]->setIcone($icone);
-		$this->itens[$codigo]->setUrl($url);
+		$this->itens[$codigo]->setUrl($this->montaUrl($url, $codigo));
 		$this->itens[$codigo]->setDescricao($descricao);
 		$this->itens[$codigo]->setItemPai($itemPai);
+		$this->itens[$codigo]->setTarget($this->getTarget());
 	
 	}
 	
@@ -369,5 +376,20 @@ class Menu {
 		$this->geraHtml();
 		return $this->html;
 	}
+	
+	/**
+	 * @return the $target
+	 */
+	public function getTarget() {
+		return $this->target;
+	}
+
+	/**
+	 * @param string $target
+	 */
+	public function setTarget($target) {
+		$this->target = $target;
+	}
+
 
 }

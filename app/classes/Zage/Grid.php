@@ -292,7 +292,7 @@ class Grid {
 		/**
 		 * Adiciona a coluna *
 		 */
-		$i = $this->adicionaColuna ( null, 6, self::CENTER, self::TP_BOTAO );
+		$i = $this->adicionaColuna ( "&nbsp;", 4, self::CENTER, self::TP_BOTAO );
 		
 		/**
 		 * Define o modelo do botão *
@@ -310,7 +310,7 @@ class Grid {
 		/**
 		 * Adiciona a coluna *
 		 */
-		$i = $this->adicionaColuna ( null, 6, self::CENTER, self::TP_IMAGEM );
+		$i = $this->adicionaColuna ( null, 4, self::CENTER, self::TP_IMAGEM );
 		
 		/**
 		 * Define as informações da Imagem *
@@ -329,7 +329,7 @@ class Grid {
 		/**
 		 * Adiciona a coluna *
 		 */
-		$i = $this->adicionaColuna ( null, 6, self::CENTER, self::TP_ICONE );
+		$i = $this->adicionaColuna ( null, 4, self::CENTER, self::TP_ICONE );
 		
 		/**
 		 * Define as informações do Ícone *
@@ -381,33 +381,54 @@ class Grid {
 		 */
 		$this->celulas = array ();
 		
-		/**
-		 * Faz o Loop para gerar o array de linhas *
-		 */
-		for($i = 0; $i < sizeof ( $dados ); $i ++) {
-			
-			/**
-			 * Inicializa os objetos *
-			 */
-			$this->linhas [$i] = new \Zage\Grid\Linha ();
-			$this->linhas [$i]->setIndice ( $i );
-			
-			for($j = 0; $j <= $this->getNumColunas () - 1; $j ++) {
-				$nome = $this->colunas [$j]->getNome ();
-				$campo = $this->colunas [$j]->getNomeCampo ();
-				
-				$this->celulas [$i] [$j] = new \Zage\Grid\Celula ();
-				$this->celulas [$i] [$j]->setLinha ( $i );
-				$this->celulas [$i] [$j]->setColuna ( $j );
-				
-				if (! empty ( $campo )) {
-					if (property_exists ( $dados [$i], $campo )) {
-						$this->celulas [$i] [$j]->setValor ( $dados [$i]->$campo );
+		if ($dados instanceof \Zend\Db\ResultSet\ResultSet) {
+			$i = 0;
+			foreach ($dados as $d) {
+				/** Inicializa os objetos **/
+				$this->linhas [$i] = new \Zage\Grid\Linha ();
+				$this->linhas [$i]->setIndice ( $i );
+					
+				for($j = 0; $j <= $this->getNumColunas () - 1; $j ++) {
+					$nome = $this->colunas [$j]->getNome ();
+					$campo = $this->colunas [$j]->getNomeCampo ();
+						
+					$this->celulas [$i] [$j] = new \Zage\Grid\Celula ();
+					$this->celulas [$i] [$j]->setLinha ( $i );
+					$this->celulas [$i] [$j]->setColuna ( $j );
+						
+					if (! empty ( $campo )) {
+						if (property_exists ( $d, $campo )) {
+							$this->celulas [$i] [$j]->setValor ( $d->$campo );
+						}
 					}
 				}
+				$this->numLinhas ++;
+				$i++;
 			}
-			$this->numLinhas ++;
+		}elseif (is_array($dados) ) {
+			for($i = 0; $i < sizeof ( $dados ); $i ++) {
+				/** Inicializa os objetos **/
+				$this->linhas [$i] = new \Zage\Grid\Linha ();
+				$this->linhas [$i]->setIndice ( $i );
+					
+				for($j = 0; $j <= $this->getNumColunas () - 1; $j ++) {
+					$nome = $this->colunas [$j]->getNome ();
+					$campo = $this->colunas [$j]->getNomeCampo ();
+			
+					$this->celulas [$i] [$j] = new \Zage\Grid\Celula ();
+					$this->celulas [$i] [$j]->setLinha ( $i );
+					$this->celulas [$i] [$j]->setColuna ( $j );
+			
+					if (! empty ( $campo )) {
+						if (property_exists ( $dados [$i], $campo )) {
+							$this->celulas [$i] [$j]->setValor ( $dados [$i]->$campo );
+						}
+					}
+				}
+				$this->numLinhas ++;
+			}
 		}
+		
 	}
 	
 	/**
@@ -418,7 +439,7 @@ class Grid {
 		/**
 		 * Inicializa o arquivo html *
 		 */
-		$this->html = $this->getNL () . '<table id="' . $this->getId () . '" class="table table-condensed table-hover table-striped table-bordered bootstrap-datatable datatable">' . $this->getNL ();
+		$this->html = $this->getNL () . '<table id="' . $this->getId () . '" class="table table-condensed table-hover table-striped table-bordered bootstrap-datatable datatable display ">' . $this->getNL ();
 		$this->html .= '<thead><tr>' . $this->getNL ();
 		
 		/**
@@ -526,7 +547,7 @@ class Grid {
 				$sPaging = "";
 				break;
 			case self::PG_BOOTSTRAP :
-				$sPaging = '"sPaginationType"	: "bootstrap",';
+				$sPaging = '"sPaginationType"	: "full_numbers",';
 				break;
 			default :
 				Erro::halt ( 'Tipo de paginação desconhecida !!!' );
@@ -539,7 +560,7 @@ class Grid {
 		if ($this->getLangUrl () != '') {
 			$lang = '"oLanguage"			: {
 						"sUrl": "' . $this->getLangUrl () . '"
-					} ';
+					}, ';
 		} else {
 			$lang = "";
 		}
@@ -548,13 +569,20 @@ class Grid {
 		$this->html .= "<script>" . $this->getNL ();
 		$this->html .= '$(document).ready(function() {
 				$(\'#' . $this->getId () . '\').dataTable( {
+					"sDom": \'<"toolbar">frtip\',
+					"bJQueryUI": true,
 					aaSorting: [],
 					' . $sPaging . '
 					' . $ssCode . '
 					' . $lang . '
+					"fnInitComplete": function () {
+            			$("div.toolbar").html(\'<div class="btn-group"><button type="button" class="btn btn-inverse btn-small dropdown-toggle" data-toggle="dropdown"><i class="icon-cog"></i></button><ul class="dropdown-menu"><li><a href="%URLADD%"><i class="icon-plus"></i>&nbsp;%NOME%</a></li></ul></div>\');
+        			},
 				} );
+				
 			} );
 		$(\'[data-toggle="tooltip"]\').tooltip();
+		
 		';
 		$this->html .= "</script>" . $this->getNL ();
 	}

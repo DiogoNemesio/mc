@@ -34,6 +34,14 @@ class MegaCondominio extends \Zage\ZWS {
 	private $dynHtmlLoad;
 	
 	/**
+	 * Instância da classe MCMascara
+	 *
+	 * @var object
+	 */
+	public $mask;
+	
+	
+	/**
 	 * Construtor
 	 *
 	 * @return void
@@ -89,6 +97,12 @@ class MegaCondominio extends \Zage\ZWS {
 		
 		/** Definindo o conteúdo do html dinâmico **/
 		$this->setDynHtmlLoad(\Parametro::getDinamicHtmlLoad());
+		
+		/** Carrega as configurações de máscara **/
+		$this->mask			= new \Mascara();
+		
+		/** Inicializa o objeto do usuário para fins de autenticação **/
+		$this->usuario		= new \Usuario();
 		
     }
 
@@ -366,22 +380,24 @@ class MegaCondominio extends \Zage\ZWS {
     public static function geraLocalizacao($codMenu,$codTipoUsuario) {
     	global $system;
     	
-		$aLocal		= MCMenu::getArrayArvoreMenuUrl($codMenu);
-		$local		= "<input type='button' class='MCObject' value='Menu Raiz' onclick=\"window.open('".ROOT_URL."','_top');\">";
-		for ($i = 0; $i < sizeof($aLocal); $i++) {
-			if ($aLocal[$i]->link != null) {
-
-    			$info		= MCUsuarios::getInfo($system->getCodUsuario());
+    	$aLocal         = \Menu::getArrayArvoreMenuUrl($codMenu);
+    	$html           = '<div><ul class="breadcrumb">';
+    	$html                   .= '<li><a href="#">Home</a></li>';
+    	$total                  = sizeof($aLocal);
+    	for ($i = 0; $i < sizeof($aLocal); $i++) {
+    		if ($aLocal[$i]->link != null) {
+    			$info		= \Usuarios::getInfo($system->getCodUsuario());
     			$codTipo	= $info->codTipo;
-				$url = DHCDHXMenu::montaUrl($aLocal[$i]->link, $aLocal[$i]->codMenu, $codTipo);
-				
-				$onClick	= "onclick=\"window.open('".$url."','_self');\"";
-			} else{
-				$onClick	= "";
-			}
-			$local	.= " -> <input type='button' class='MCObject' value='".$aLocal[$i]->menu."' $onClick>";
-		}
-		return ($local);
+				$url = \Zage\Menu::montaUrl($aLocal[$i]->link, $aLocal[$i]->codMenu, $codTipo);
+       		} else{
+    			$url                    = "#";
+    		}
+    		$html  .= "<li><a href='".$url."'>".$aLocal[$i]->menu."</a>";
+    		$html .= "</li>";
+    	
+    	}
+    	$html   .= "</ul></div>";
+    	return ($html);
     }
     
    /**
@@ -431,43 +447,115 @@ class MegaCondominio extends \Zage\ZWS {
 		return ($sel);
     }
     
+    
     /**
-     * 
-     * Resgatar o caminho completo do arquivo por extensão
-     * @param string $arquivo
-     * @param string $extensao
-     * @param string $tipo
-     * @param string $default
+     * Resgatar o html padrão
+     * @return string
      */
-    public static function getCaminhoCorrespondente($arquivo,$extensao,$tipo = MC_PATH) {
-    	
-    	/** Resgata o nome base do arquivo **/
-    	$base	= pathinfo($arquivo,PATHINFO_BASENAME);
-    	
-    	/** Resgata o nome do arquivo sem a extensão **/
-    	$base	= substr($base,0,strpos($base,'.'));
-    	
-    	/** define o tipo padrão **/
-    	if (!$tipo)	$tipo	= MC_PATH;
-    	
-    	if (!$extensao)	{
-    		return ($arquivo);	
-    	}elseif (strtolower($extensao) == "html") {
-    		($tipo == MC_PATH) ? $dir = HTML_PATH : $dir = HTML_URL;
-    		$ext	= ".html";
-    	}elseif (strtolower($extensao) == "dp") {
-    		($tipo == MC_PATH) ? $dir = DP_PATH : $dir = DP_URL;
-    		$ext	= ".dp.php";
-    	}elseif (strtolower($extensao) == "xml") {
-			($tipo == MC_PATH) ? $dir = XML_PATH : $dir = XML_URL;
-    		$ext	= ".xml";
-    	}elseif (strtolower($extensao) == "bin") {
-    		($tipo == MC_PATH) ? $dir = BIN_PATH : $dir = BIN_URL;
-    		$ext	= ".php";
-    	}else{
-    		return ($arquivo);
-    	}
-    	
-    	return ($dir . '/' .$base . $ext);
+    public function loadHtml() {
+    	return $this->getDynHtmlLoad();
     }
+    
+    /**
+     * Retorna o conteudo do xml
+     *
+     * @param string $arquivo
+     * @return string
+     */
+    public static function getXmlData ($arquivo) {
+    	$xmlData	= \Zage\Util::getConteudoArquivo($arquivo);
+    	$xmlData	= str_ireplace("\'", "\"", $xmlData);
+    	$xmlData	= str_ireplace(PHP_EOL, null, $xmlData);
+    	return($xmlData);
+    }
+    
+    /**
+     *
+     * Procura por itens do tipo input em um Xml
+     * @param string $xml
+     * @return array $array
+     */
+    public static function getXmlInputs($xml) {
+    	global $system;
+    
+    	if (substr($xml,0,5) == '<?xml') {
+    		$xmlData	= $xml;
+    	}else{
+    		/** Coloca o arquivo XMl em uma string **/
+    		$xmlData	= self::getXmlData($xml);
+    	}
+    
+    	/** Ajusta o caracter set **/
+    	$xmlData 	= str_ireplace("%CHARSET%", $system->config["charset"], $xmlData);
+    
+    	//$log->debug('XMLData: '.$xmlData);
+    
+    	/** Carrega o Arquivo Xml em um objeto **/
+    	$xmlObj = simplexml_load_string($xmlData);
+    
+    	$inputs	= array();
+    	DHCUtil::getXmlInputsItens($xmlObj,$inputs);
+    	return ($inputs);
+    
+    }
+    
+    
+    /**
+     *
+     * Procura por itens do tipo input em um Xml
+     * @param string $xml
+     * @return array $array
+     */
+    public static function getXmlInputsItens($obj,&$array) {
+    	global $system;
+    	foreach ($obj as $key => $value) {
+    		if (is_object($value) && isset($value->attributes()->type)) {
+    			switch ($value->attributes()->type) {
+    				case "checkbox":
+    				case "input":
+    				case "file":
+    				case "hidden":
+    				case "multiselect":
+    				case "password":
+    				case "radio":
+    				case "select":
+    				case "textarea":
+    				case "calendar":
+    				case "colorpicker":
+    				case "combo":
+    				case "editor":
+    					if (isset($value->attributes()->name) && isset($value->attributes()->className) && preg_match('#MCMask-(.+)#', $value->attributes()->className)) {
+    						$nome 	= $value->attributes()->name;
+    						//$log->debug("Name = ".$nome);
+    						$array["$nome"]	= $value->attributes();
+    					}
+    					break;
+    			}
+    		}
+    
+    		/** Recursividade **/
+    		self::getXmlInputsItens($value,$array);
+    	}
+    
+    }
+    
+    /**
+     * Verifica se o usuário tem permissão no sistema
+     */
+    public function ehAdmin($usuario) {
+    	global $db;
+    	$arr = $db->extraiPrimeiro("
+			SELECT	COUNT(*) NUM
+			FROM	USUARIOS U
+			WHERE	U.usuario               = '".$usuario."'
+			AND		U.codTipo               = 'A'
+		");
+    	if ($arr->NUM == 0) {
+    		return false;
+    	}else{
+    		return true;
+    	}
+    }
+    
+
 }
