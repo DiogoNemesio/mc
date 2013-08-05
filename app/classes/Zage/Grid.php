@@ -569,7 +569,7 @@ class Grid {
 		$this->html .= "<script>" . $this->getNL ();
 		$this->html .= '$(document).ready(function() {
 				$(\'#' . $this->getId () . '\').dataTable( {
-					"sDom": \'<"toolbar">frtip\',
+					"sDom": \'<"toolbar">frtlip\',
 					"bJQueryUI": true,
 					aaSorting: [],
 					' . $sPaging . '

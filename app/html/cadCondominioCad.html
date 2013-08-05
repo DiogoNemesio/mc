@@ -1,5 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "[url="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"]http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd[/url]">
-<html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head> 
 	%LOAD_HTML%
 	
@@ -12,67 +12,141 @@
 	}
 	</script>
 </head>
-<body class="MCBody">
-<script>var vTextMessage	= '%MENSAGEM%';mostraMensagem();</script>
-<form id="FMenuID" method="post" action="%FORM_ACTION%" target="_parent">
-<input type="hidden" name="tab" value="tCad">
-<input type="hidden" name="id" value="%ID%">
-<div align="left">
-<table align="left" class="mcTable">
-	<tr><td><div id="form_container" style="width:600px;height:40px;"></div></td></tr>
-</table>
-</form>
+<body leftmargin="0" marginheight="0" marginwidth="0" topmargin="0">
+<div id="content">
+        <div class="box-header" data-original-title>
+        <h4><i class="icon-edit"></i><span class="break"></span>&nbsp;Cadastro de Condomínio</h4>
+        </div>
+        <hr>
+        <div class="box-content">
+            <form class="form-horizontal" id="zgFormID" action="#">
+            <input type="hidden" name="id" value="%ID%">
+            <input type="hidden" name="codCondominio">
+            <fieldset>
+                    <div class="control-group">
+                        <label class="control-label" for="nomeID">Nome</label>
+                        <div class="controls">
+                                <div class="input-prepend">
+                                        <span class="add-on"><i class="icon-book"></i></span>
+                                        <input class="input-large" id="nomeID" type="text" name="nome" minlength="2" maxlength="60" value="%NOME%" required autocomplete="off">
+                                </div>
+                        </div>
+                	</div>
+                    <div class="control-group">
+                        <label class="control-label" for="identificacaoID">Identificação</label>
+                        <div class="controls">
+                                <div class="input-prepend">
+                                        <span class="add-on"><i class="icon-envelope"></i></span>
+                                        <input class="input-large" id="identificacaoID" type="text" name="email" maxlength="20" value="%ID_CONDOMINIO%" autocomplete="off">
+                                </div>
+                        </div>
+                	</div>
+                    <div class="control-group">
+                        <label class="control-label" for="enderecoID">Endereço</label>
+                        <div class="controls">
+                                <div class="input-prepend">
+                                        <span class="add-on"><i class="icon-road"></i></span>
+                                        <input class="input-large" id="enderecoID" type="text" name="endereco" maxlength="100" value="%ENDERECO%" autocomplete="off">
+                                </div>
+                        </div>
+                	</div>
+                    <div class="control-group">
+                        <label class="control-label" for="inputIcon">Bairro</label>
+                        <div class="controls">
+                                <div class="input-prepend">
+                                        <span class="add-on"><i class="icon-home"></i></span>
+                                        <input class="input-large" id="bairroID" type="text" name="bairro" maxlength="60" value="%BAIRRO%" autocomplete="off">
+                                </div>
+                        </div>
+                	</div>
+                    <div class="control-group">
+                        <label class="control-label" for="inputIcon">Número</label>
+                        <div class="controls">
+                                <div class="input-prepend">
+                                        <span class="add-on"><i class="icon-home"></i></span>
+                                        <input class="input-large" id="numeroID" type="text" name="numero" maxlength="10" value="%NUMERO%" autocomplete="off">
+                                </div>
+                        </div>
+                	</div>
+                    <div class="control-group">
+                        <label class="control-label" for="inputIcon">CEP</label>
+                        <div class="controls">
+                                <div class="input-prepend">
+                                        <span class="add-on"><i class="icon-home"></i></span>
+                                        <input class="input-large" id="cepID" type="text" name="cep" maxlength="10" value="%CEP%" autocomplete="off">
+                                </div>
+                        </div>
+                	</div>
+                    <div class="control-group">
+                        <label class="control-label" for="cidadeID">UF / Cidade</label>
+                        <div class="controls">
+                                <div class="input-prepend">
+                                        <span class="add-on"><i class="icon-home"></i></span>
+                                        <input type="text" name="cidade" id="cidadeID" data-provide="typeahead" value="%CIDADE%" autocomplete="off" required/>
+                                </div>
+                        </div>
+                	</div>
+    
+                    <div class="control-group">
+                        <label class="control-label" for="enderecoID">Número de Unidades</label>
+                        <div class="controls">
+							<div class="input-prepend">
+                                        <span class="add-on"><i class="icon-road"></i></span>
+                                        <input class="input-large" id="numUnidadesID" type="number" name="numUnidades" maxlength="4" value="%NUM_UNIDADES%" autocomplete="off">
+                                </div>
+                        </div>
+                	</div>
+                 <div class="control-group">
+                                <div class="controls">
+                                        <button type="submit" class="btn btn-primary" id="submit">Salvar</button>
+                                        <button type="button" class="btn btn-warning" id="cancel" onclick="window.open('%URLVOLTAR%','_self')">Voltar</button>
+                                </div>
+                        </div>
+            </fieldset>
+            </form>
+        </div>
 </div>
+<div id="zgDivMsgID" class="modal hide fade"></div>
 <script>
-dhtmlx.skin = "%SKIN_NAME%";
-window.dhx_globalImgPath="%HTMLX_IMG_URL%";
-var dhxForm;
-dhxForm = new dhtmlXForm("form_container");
-dhxForm.setSkin("%FORM_SKIN_NAME%");
-dhxForm.loadStructString('%XML_DATA%');
-%DISABLE%
-dhxForm.attachEvent("onButtonClick", function(name, command){
-	if (name=="Salvar") {
-		MCApplyFormValues(dhxForm);
-		this.send("%URL_FORM%","post",function(loader,response) {
-			if (response !== '') {
-				if (isNumeric(response)) {
-					vTextMessage	= "Condomínio cadastrado com sucesso !!";
-				}else{
-					vTextMessage	= "Erro:"+response;					
-				}
-			}else{
-				vTextMessage	= "Informações salvas com sucesso !!";
-			}
-			mostraMensagem();
-		});
-	}
-	if (name=="voltar") {
-		voltarPagina();
-	}
+var timer;
 
+$('#zgFormID').submit(function() {
+        $.ajax({
+                type:           "POST", 
+                url:            "%DP%",
+                data:           $('#zgFormID').serialize(),
+        }).done(function( data, textStatus, jqXHR) {
+                mostraMensagem(data);
+        }).fail(function( jqXHR, textStatus, errorThrown) {
+                mostraMensagem('1||'+errorThrown);
+        });
+        return false; 
 });
-var dhxComboEstado = dhxForm.getCombo("codEstado");
-var dhxComboCidade = dhxForm.getCombo("codCidade");
-//var dhxComboEstado = dhtmlXComboFromSelect("cEstados");
-//var dhxComboCidade = dhtmlXComboFromSelect("cCidades");
-dhxComboEstado.loadXMLString('%ESTADOS%');
-dhxComboCidade.loadXMLString('%CIDADES%');
-//dhxComboEstado.enableFilteringMode(true);
-dhxComboEstado.attachChildCombo(dhxComboCidade,"%BIN_URL%/getXMLCidades.php?cidade=%COD_CIDADE%");
-dhxComboCidade.show(true);
-dhxComboEstado.readonly(true);
-dhxComboCidade.readonly(true);
-dhxComboEstado.enableOptionAutoWidth(true);
-//dhxForm.getInput("cep").className = 'MCObject';
-//alert(dhxForm.getInput("cep").className);
-MCApplyMasks();
+
+$("#cidadeID").typeahead({
+        minLength:      3,
+        itens:          12,
+    source : function(query,process) {
+        clearTimeout(timer);
+        timer=setTimeout(function() {
+                $.ajax({
+                    type: "GET",
+                    url: "%DP_URL%/getCidades.php",
+                        dataType: "json",
+                                data: { q: query },
+                        async: false,
+                        success: function(data) {
+                                return(process(data));
+                    }
+                })
+        }, 1000);
+    }
+});
+
+$("input,textarea").jqBootstrapValidation({
+        preventSubmit: true
+});
 </script>
-<script type="text/javascript">
-	window.onload = go;
-	function go(){
-		Typecast.Init();
-	}
-</script>
+
 </body>
 </html>

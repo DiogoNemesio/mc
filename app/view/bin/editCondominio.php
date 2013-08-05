@@ -5,40 +5,58 @@ if (defined('DOC_ROOT')) {
 }else{
 	include_once('../include.php');
 }
-/** Verifica se o usuário está autenticado **/
+#################################################################################
+## Verifica se o usuário está autenticado
+#################################################################################
 include_once(BIN_PATH . 'auth.php');
 
-/** Resgatando valores postados **/
-if (isset($_GET['id'])) {
-	$id = DHCUtil::antiInjection($_GET["id"]);
-}elseif (isset($_POST['id'])) {
-	$id = DHCUtil::antiInjection($_POST["id"]);
+#################################################################################
+## Resgata os parâmetros passados pelo menu
+#################################################################################
+if (isset($_GET["id"])) 	{
+	$id = \Zage\Util::antiInjection($_GET["id"]);
+}elseif (isset($_POST["id"])) 	{
+	$id = \Zage\Util::antiInjection($_POST["id"]);
+}elseif (isset($id)) 	{
+	$id = \Zage\Util::antiInjection($id);
 }else{
-	$id	= null;
+	die('Parâmetro inválido 1');
 }
 
-/** Descompactar as variáveis **/
-DHCUtil::descompactaId($id);
+#################################################################################
+## Descompacta o ID
+#################################################################################
+\Zage\Util::descompactaId($id);
+
 
 if (!isset($tab)) 			$tab 			= 'tCad';
 if (!isset($codCondominio))	$codCondominio	= null;
 
-/************************** Localização **************************/
-$local		= MegaCondominio::geraLocalizacao($_codMenu_, $system->getTipoUsuario());
 
-/** Carregando o template html **/
-$template	= new DHCHtmlTemplate();
-$template->loadTemplate(MegaCondominio::getCaminhoCorrespondente(__FILE__, 'html'));
+#################################################################################
+## Gera a localização (breadcrumb)
+#################################################################################
+$local          = $system->geraLocalizacao($_codMenu_, $system->usuario->getTipo());
 
-/** Define os valores das variáveis **/
-$template->assign('URL_FORM'		,$_SERVER['REQUEST_URI']);
-$template->assign('TAB'				,$tab);
-$template->assign('COD_CONDOMINIO'	,$codCondominio);
-$template->assign('ID'				,$id);
-$template->assign('LOCAL'			,$local);
-$template->assign('MENSAGEM'		,null);
+#################################################################################
+## Carregando o template html
+#################################################################################
+$tpl	= new \Zage\Template();
+$tpl->load(\Zage\Util::getCaminhoCorrespondente(__FILE__, \Zage\ZWS::EXT_HTML));
 
-/** Por fim exibir a página HTML **/
-echo $template->getHtmlCode();
+#################################################################################
+## Define os valores das variáveis
+#################################################################################
+$tpl->set('URL_FORM'		,$_SERVER['REQUEST_URI']);
+$tpl->set('TAB'				,$tab);
+$tpl->set('COD_CONDOMINIO'	,$codCondominio);
+$tpl->set('ID'				,$id);
+$tpl->set('LOCALIZACAO'		,$local);
+$tpl->set('MENSAGEM'		,null);
+
+#################################################################################
+## Por fim exibir a página HTML
+#################################################################################
+$tpl->show();
 
 ?>
